@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { NavbarProps } from "./Types/NavBarType";
+import store from "../state/store";
 
-function Navbar({ DarkTheme, handleTheme }: NavbarProps) {
-  const [currentTheme, SetcurrentTheme] = useState<boolean>(false);
-
-  useEffect(() => {
-    SetcurrentTheme(DarkTheme);
-  }, [DarkTheme]);
+function Navbar() {
+  const {UserThemeStore } = store;
+  const { setIsDark } = UserThemeStore(); // set dartheme working fine
 
   return (
     <div className="flex flex-row w-full p-1  bg-opacity-20 border-b border-black border-opacity-20">
@@ -19,7 +16,7 @@ function Navbar({ DarkTheme, handleTheme }: NavbarProps) {
       <p>Battery icon</p>
       <p>Wifi Icon</p>
       <p>More Function Button</p>
-      <p>Date time</p>
+      <p onClick={setIsDark}>Date time</p>
     </div>
   );
 }

@@ -1,24 +1,22 @@
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import Navbar from './Components/Navbar';
-
+import NightBg from './assets/background/wallpaper-night.jpg'
+import MorngBg from './assets/background/wallpaper-day.jpg'
+import store from './state/store' 
 
 
 function App() {
-  const [DarkTheme, SetDarkTheme] = useState<boolean>(false)
-
-  const handleTheme = (
-    DarkTheme : boolean,
-    SetDarkTheme : Dispatch<SetStateAction<boolean>>
-  ):void =>{
-    // pass this on NavBar
-    SetDarkTheme(!DarkTheme)
-  }
+  const {UserThemeStore } = store;
+  const { setIsDark, isDark } = UserThemeStore();
   
   return (
     <>
       {/*main div with min-h-screen and width full  */}
-      <div className='min-h-screen  w-full bg-gray-400'>
-        <Navbar DarkTheme={DarkTheme} handleTheme={handleTheme}/>
+      <div className={`min-h-screen  w-full`}
+      draggable={false}
+      style={{ backgroundImage: `url(${isDark? NightBg:MorngBg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+      >
+        <Navbar />
         {/* fixed top Navbar */}
         {/* CENTER FOR DISPLAYING  */}
         {/* fixed bottom Doggle Bar */}
