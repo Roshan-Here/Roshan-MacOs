@@ -12,7 +12,7 @@ function App() {
   return (
     <>
       {/*main div with min-h-screen and width full  */}
-      <div className={`min-h-screen  w-full`}
+      <div className={`min-h-screen  w-full font-avenir`}
       draggable={false}
       style={{ backgroundImage: `url(${isDark? NightBg:MorngBg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
       >
