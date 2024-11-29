@@ -16,10 +16,10 @@ function Navbar() {
   }, []);
 
   return (
-    <div className="flex flex-row justify-between text-sm w-full p-1 text-custom-gray font-semibold bg-opacity-20 border-b border-black border-opacity-20">
+    <div className="flex flex-row justify-between text-sm w-full p-1 text-white font-semibold bg-opacity-20 border-b border-black border-opacity-20">
       {/* Apple icon  with on click dropdown*/}
       <div className="flex flex-row gap-2 items-center">
-        <p className="hover:bg-slate-200 hover:border-none hover:rounded-sm hover:bg-opacity-50 p-1 px-3 ml-1 flex justify-center items-center">
+        <p className="hover:bg-custom-gray hover:border-none hover:rounded-sm hover:bg-opacity-50 p-1 px-3 ml-1 flex justify-center items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="0.82em"
@@ -31,14 +31,16 @@ function Navbar() {
           </svg>
         </p>
         {/* Open Folders Name */}
-        <p className="hover:bg-slate-200 hover:border-none hover:rounded-sm hover:bg-opacity-50 p-1">Folder Name</p>
+        <p className="hover:bg-custom-gray hover:border-none hover:rounded-sm hover:bg-opacity-50 p-1">
+          Folder Name
+        </p>
       </div>
       <div className="flex flex-row gap-2 items-center">
         {/* end */}
-        <div className="hover:bg-slate-200 hover:border-none hover:rounded-sm hover:bg-opacity-50 p-1 flex justify-center items-center space-x-2">
-          <p>100%</p>
+        <div className="hover:bg-custom-gray hover:border-none hover:rounded-sm hover:bg-opacity-50 p-1 flex justify-center items-center space-x-2">
+          <p className="text-xm">100%</p>
           <svg
-            width="28"
+            width="24"
             height="19"
             viewBox="0 0 28 19"
             fill="none"
@@ -67,9 +69,24 @@ function Navbar() {
             </defs>
           </svg>
         </div>
-        <p>Wifi Icon</p>
+        <div className="hover:bg-custom-gray hover:border-none hover:rounded-sm hover:bg-opacity-50 p-1">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 22 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0 5.00001L2 7.00001C6.97 2.03001 15.03 2.03001 20 7.00001L22 5.00001C15.93 -1.06999 6.08 -1.06999 0 5.00001ZM8 13L11 16L14 13C13.6064 12.6054 13.1388 12.2923 12.624 12.0786C12.1092 11.865 11.5574 11.755 11 11.755C10.4426 11.755 9.89076 11.865 9.37596 12.0786C8.86117 12.2923 8.39359 12.6054 8 13ZM4 9.00001L6 11C7.32646 9.67465 9.12487 8.93016 11 8.93016C12.8751 8.93016 14.6735 9.67465 16 11L18 9.00001C14.14 5.14001 7.87 5.14001 4 9.00001Z"
+              fill="white"
+            />
+          </svg>
+        </div>
         <p>More Function Button</p>
-        <p onClick={setIsDark}>{formatDate(currentDate)}</p>
+        <p className="mr-2" onClick={setIsDark}>
+          {formatDate(currentDate)}
+        </p>
       </div>
     </div>
   );
