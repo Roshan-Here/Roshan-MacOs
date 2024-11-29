@@ -19,7 +19,7 @@ function Navbar() {
     <div className="flex flex-row justify-between text-sm w-full p-1 text-custom-gray font-semibold bg-opacity-20 border-b border-black border-opacity-20">
       {/* Apple icon  with on click dropdown*/}
       <div className="flex flex-row gap-2 items-center">
-        <p className="px-3 flex justify-center items-center">
+        <p className="hover:bg-slate-200 hover:border-none hover:rounded-sm hover:bg-opacity-50 p-1 px-3 ml-1 flex justify-center items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="0.82em"
@@ -31,11 +31,11 @@ function Navbar() {
           </svg>
         </p>
         {/* Open Folders Name */}
-        <p>Folder Name</p>
+        <p className="hover:bg-slate-200 hover:border-none hover:rounded-sm hover:bg-opacity-50 p-1">Folder Name</p>
       </div>
       <div className="flex flex-row gap-2 items-center">
         {/* end */}
-        <div className="hover:bg-slate-200 hover:border-none hover:rounded-lg hover:bg-opacity-50 p-1 flex justify-center items-center space-x-2">
+        <div className="hover:bg-slate-200 hover:border-none hover:rounded-sm hover:bg-opacity-50 p-1 flex justify-center items-center space-x-2">
           <p>100%</p>
           <svg
             width="28"

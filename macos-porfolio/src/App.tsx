@@ -1,20 +1,25 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
-import Navbar from './Components/Navbar';
-import NightBg from './assets/background/wallpaper-night.jpg'
-import MorngBg from './assets/background/wallpaper-day.jpg'
-import store from './state/store' 
-
+import React, { Dispatch, SetStateAction, useState } from "react";
+import Navbar from "./Components/Navbar";
+import NightBg from "./assets/background/wallpaper-night.jpg";
+import MorngBg from "./assets/background/wallpaper-day.jpg";
+import store from "./state/store";
 
 function App() {
-  const {UserThemeStore } = store;
+  const { UserThemeStore } = store;
   const { setIsDark, isDark } = UserThemeStore();
-  
+
   return (
     <>
       {/*main div with min-h-screen and width full  */}
-      <div className={`min-h-screen  w-full font-avenir`}
-      draggable={false}
-      style={{ backgroundImage: `url(${isDark? NightBg:MorngBg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+      <div
+        className={`min-h-screen  w-full font-avenir`}
+        draggable={false}
+        style={{
+          backgroundImage: `url(${isDark ? NightBg : MorngBg})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "brightness(106%)",
+        }}
       >
         <Navbar />
         {/* fixed top Navbar */}
@@ -22,7 +27,7 @@ function App() {
         {/* fixed bottom Doggle Bar */}
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
