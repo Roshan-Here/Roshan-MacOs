@@ -8,6 +8,8 @@
 - Converted to Next.js
 - Rewrited code for Next.js
 - Added Logo
+- Updated components
+- Created Folder
 
 ### Removed
 - Deleted React Vite version

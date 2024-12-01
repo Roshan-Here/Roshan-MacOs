@@ -7,17 +7,17 @@ import {
   useTransform,
 } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
 import { useRef, useState } from "react";
-import { DockItem } from '../Types/FloatingDockType';
+import { DockItem } from "../Types/FloatingDockType";
 import { cn } from "../utils/utils";
+import { FloatingDockProps } from "./../Types/FloatingDockType";
 
-export const FloatingDock = ({
+export const FloatingDock: React.FC<FloatingDockProps> = ({
   items,
   className,
-}: {
-  items: DockItem[];
-  className?: string;
+  onItemClick,
+  openFolders,
+  minimizedFolders,
 }) => {
   let mouseX = useMotionValue(Infinity);
 
@@ -29,9 +29,17 @@ export const FloatingDock = ({
         "fixed bottom-1 left-1/2 -translate-x-1/2 mx-auto flex h-[74px] items-end rounded-2xl bg-white/10 px-4 pb-2 backdrop-blur-md",
         className
       )}
+      style={{ zIndex: 9999 }}
     >
       {items.map((item) => (
-        <IconContainer mouseX={mouseX} key={item.id} {...item} />
+        <IconContainer
+          mouseX={mouseX}
+          key={item.id}
+          {...item}
+          onClick={() => onItemClick(item.id)}
+          isOpen={openFolders.includes(item.id)}
+          isMinimized={minimizedFolders.includes(item.id)}
+        />
       ))}
     </motion.div>
   );
@@ -42,12 +50,16 @@ function IconContainer({
   id,
   title,
   imageSrc,
-  href,
+  onClick,
+  isOpen,
+  isMinimized,
 }: DockItem & {
-  mouseX: MotionValue;
+  mouseX: MotionValue<number>;
+  onClick: () => void;
+  isOpen: boolean;
+  isMinimized: boolean;
 }) {
   let ref = useRef<HTMLDivElement>(null);
-  const [clicked, setClicked] = useState(false);
 
   let distance = useTransform(mouseX, (val) => {
     let bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
@@ -71,44 +83,38 @@ function IconContainer({
   const [hovered, setHovered] = useState(false);
 
   return (
-    <Link href={href}>
-      <motion.div
-        ref={ref}
-        style={{ width, height }}
-        whileTap={{ scale: 0.9 }}
-        onClick={() => setClicked(!clicked)}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        className="relative mx-2 gap-4 flex flex-col items-center justify-center"
-      >
-        <motion.div style={{ width, height }}>
-          <Image
-            src={imageSrc}
-            alt={title}
-            width={500} 
-            height={500}
-            style={{ objectFit: 'cover' }} 
-          />
-        </motion.div>
-        <AnimatePresence>
-          {hovered && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              className="absolute -top-8 rounded-md bg-black/75 px-2 py-1 text-xs text-white"
-            >
-              {title}
-            </motion.div>
-          )}
-        </AnimatePresence>
-        <motion.div
-          initial={false}
-          animate={{ scale: clicked ? 1 : 0 }}
-          className="absolute -bottom-1 h-1 w-1 rounded-full bg-white"
-        />
+    <motion.div
+      ref={ref}
+      style={{ width, height }}
+      whileTap={{ scale: 0.9 }}
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="relative mx-1 flex flex-col items-center justify-center"
+    >
+      <motion.div style={{ width, height }}>
+        <Image src={imageSrc} alt={title} layout="fill" objectFit="contain" />
       </motion.div>
-    </Link>
+      <AnimatePresence>
+        {hovered && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            className="absolute -top-8 rounded-md bg-black/75 px-2 py-1 text-xs text-white"
+          >
+            {title}
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {(isOpen || isMinimized) && (
+        <motion.div
+          className="absolute -bottom-1 h-1 w-1 rounded-full bg-white"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          exit={{ scale: 0 }}
+        />
+      )}
+    </motion.div>
   );
 }
-
