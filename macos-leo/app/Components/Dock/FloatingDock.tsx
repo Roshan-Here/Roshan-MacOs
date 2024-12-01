@@ -29,7 +29,7 @@ export const FloatingDock: React.FC<FloatingDockProps> = ({
         "fixed bottom-1 left-1/2 -translate-x-1/2 mx-auto flex h-[74px] items-end rounded-2xl bg-white/10 px-4 pb-2 backdrop-blur-md",
         className
       )}
-      style={{ zIndex: 9999 }}
+      style={{ zIndex: 99999 }}
     >
       {items.map((item) => (
         <IconContainer

@@ -11,5 +11,8 @@
 - Updated components
 - Created Folder
 
+### Changed
+- Updated Z Index of Dock
+
 ### Removed
 - Deleted React Vite version
