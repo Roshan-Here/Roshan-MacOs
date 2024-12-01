@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.hide-scrollbar {
+    overflow: hidden; /* Hide the scrollbar */
+    height: 100vh;    /* Adjust this based on your layout */
+  }

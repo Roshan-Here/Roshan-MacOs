@@ -1,0 +1,114 @@
+import {
+  AnimatePresence,
+  MotionValue,
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import { useRef, useState } from "react";
+import { DockItem } from '../Types/FloatingDockType';
+import { cn } from "../utils/utils";
+
+export const FloatingDock = ({
+  items,
+  className,
+}: {
+  items: DockItem[];
+  className?: string;
+}) => {
+  let mouseX = useMotionValue(Infinity);
+
+  return (
+    <motion.div
+      onMouseMove={(e) => mouseX.set(e.pageX)}
+      onMouseLeave={() => mouseX.set(Infinity)}
+      className={cn(
+        "fixed bottom-1 left-1/2 -translate-x-1/2 mx-auto flex h-[74px] items-end rounded-2xl bg-white/10 px-4 pb-2 backdrop-blur-md",
+        className
+      )}
+    >
+      {items.map((item) => (
+        <IconContainer mouseX={mouseX} key={item.id} {...item} />
+      ))}
+    </motion.div>
+  );
+};
+
+function IconContainer({
+  mouseX,
+  id,
+  title,
+  imageSrc,
+  href,
+}: DockItem & {
+  mouseX: MotionValue;
+}) {
+  let ref = useRef<HTMLDivElement>(null);
+  const [clicked, setClicked] = useState(false);
+
+  let distance = useTransform(mouseX, (val) => {
+    let bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+    return val - bounds.x - bounds.width / 2;
+  });
+
+  let widthTransform = useTransform(distance, [-150, 0, 150], [60, 120, 60]);
+  let heightTransform = useTransform(distance, [-150, 0, 150], [60, 120, 60]);
+
+  let width = useSpring(widthTransform, {
+    mass: 0.1,
+    stiffness: 150,
+    damping: 12,
+  });
+  let height = useSpring(heightTransform, {
+    mass: 0.1,
+    stiffness: 150,
+    damping: 12,
+  });
+
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <Link href={href}>
+      <motion.div
+        ref={ref}
+        style={{ width, height }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => setClicked(!clicked)}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        className="relative mx-2 gap-4 flex flex-col items-center justify-center"
+      >
+        <motion.div style={{ width, height }}>
+          <Image
+            src={imageSrc}
+            alt={title}
+            width={500} 
+            height={500}
+            style={{ objectFit: 'cover' }} 
+          />
+        </motion.div>
+        <AnimatePresence>
+          {hovered && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              className="absolute -top-8 rounded-md bg-black/75 px-2 py-1 text-xs text-white"
+            >
+              {title}
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <motion.div
+          initial={false}
+          animate={{ scale: clicked ? 1 : 0 }}
+          className="absolute -bottom-1 h-1 w-1 rounded-full bg-white"
+        />
+      </motion.div>
+    </Link>
+  );
+}
+
