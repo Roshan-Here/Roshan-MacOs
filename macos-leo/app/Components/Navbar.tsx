@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { UserThemeStore } from "../state/store";
+import { UserThemeStore,useFileStore } from "../state/store";
 import { formatDate } from "./utils/datetime";
 
 function Navbar() {
   const { setIsDark } = UserThemeStore();
+  const FileName = useFileStore((state) => state.name)
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
@@ -31,7 +32,7 @@ function Navbar() {
         </p>
         {/* Open Folders Name */}
         <p className="hover:bg-custom-gray hover:border-none hover:rounded-sm hover:bg-opacity-50 p-1">
-          Folder Name
+          {FileName}
         </p>
       </div>
       <div className="flex flex-row gap-2 items-center">

@@ -11,6 +11,7 @@ import { useRef, useState } from "react";
 import { DockItem } from "../Types/FloatingDockType";
 import { cn } from "../utils/utils";
 import { FloatingDockProps } from "./../Types/FloatingDockType";
+import { useFileStore } from "@/app/state/store";
 
 export const FloatingDock: React.FC<FloatingDockProps> = ({
   items,
@@ -20,7 +21,7 @@ export const FloatingDock: React.FC<FloatingDockProps> = ({
   minimizedFolders,
 }) => {
   let mouseX = useMotionValue(Infinity);
-
+  const SetFile = useFileStore((state)=>state.setFile)
   return (
     <motion.div
       onMouseMove={(e) => mouseX.set(e.pageX)}
@@ -36,7 +37,10 @@ export const FloatingDock: React.FC<FloatingDockProps> = ({
           mouseX={mouseX}
           key={item.id}
           {...item}
-          onClick={() => onItemClick(item.id)}
+          onClick={() => {
+            SetFile(item.title)
+            onItemClick(item.id)
+          }}
           isOpen={openFolders.includes(item.id)}
           isMinimized={minimizedFolders.includes(item.id)}
         />

@@ -67,20 +67,18 @@ const UserThemeStore = create<Theme & ThemeActions>()(
 );
 
 type FileData = {
-  id: string;
   name: string;
 };
 
 type FileDataActions = {
-  setFile: (id: string, name: string) => void;
+  setFile: (name: string) => void;
 };
 
 const useFileStore = create<FileData & FileDataActions>()(
   persist(
     (set) => ({
-      id: "",
-      name: "",
-      setFile: (id: string, name: string) => set({ id, name }),
+      name: "About",
+      setFile: (name: string) => set({ name }),
     }),
     {
       name: "FileData",
