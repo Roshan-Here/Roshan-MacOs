@@ -21,10 +21,6 @@ export default function Home() {
       }}
     >
       <Navbar />
-      {/* FOLDER SPACE */}
-      {/* fixed top Navbar */}
-      {/* CENTER FOR DISPLAYING  */}
-      {/* fixed bottom Dock Bar */}
       <MainScreen/>
 
     </div>

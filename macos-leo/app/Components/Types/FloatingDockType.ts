@@ -1,9 +1,12 @@
+import { ReactNode } from "react";
+
 export interface DockItem {
   id: string;
   title: string;
   imageSrc: string;
-  href: string;
-  content: string;
+  content: ReactNode;
+  initialSize: { width: number; height: number };
+  initialPosition: { x: number; y: number };
 }
 
 export interface FloatingDockDesktopProps {

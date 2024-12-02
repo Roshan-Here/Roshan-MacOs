@@ -1,14 +1,16 @@
-import { IconMinus, IconX } from "@tabler/icons-react";
 import React, { useEffect, useRef, useState } from "react";
-import { FloatingFolderProps } from "@/app/Components/Types/FolderType";
+import { FloatingFolderProps } from "../../Types/FolderType";
+import { IconMinus, IconX } from "@tabler/icons-react";
+
+const preventDragClass = "select-none pointer-events-none";
 
 export const FloatingFolder: React.FC<FloatingFolderProps> = ({
   isOpen = true,
   onClose,
   onMinimize,
   children,
-  className = "w-[400px] h-[300px]",
   title = "Folder",
+  initialSize = { width: 400, height: 300 },
   initialPosition = { x: 100, y: 100 },
   zIndex = 10,
   onBringToFront,
@@ -17,10 +19,7 @@ export const FloatingFolder: React.FC<FloatingFolderProps> = ({
   const [isResizing, setIsResizing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState(initialPosition);
-  const [size, setSize] = useState({
-    width: parseInt(className.match(/w-\[(\d+)px\]/)?.[1] || "400"),
-    height: parseInt(className.match(/h-\[(\d+)px\]/)?.[1] || "300"),
-  });
+  const [size, setSize] = useState(initialSize);
 
   const folderRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<HTMLDivElement>(null);
@@ -119,7 +118,7 @@ export const FloatingFolder: React.FC<FloatingFolderProps> = ({
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (e.target === dragRef.current) {
+    if (dragRef.current && dragRef.current.contains(e.target as Node)) {
       setIsDragging(true);
       const startX = e.clientX - position.x;
       const startY = e.clientY - position.y;
@@ -155,12 +154,12 @@ export const FloatingFolder: React.FC<FloatingFolderProps> = ({
   return (
     <div
       ref={folderRef}
-      className={`fixed border-2 border-gray-300 bg-white rounded-lg shadow-xl ${className}`}
+      className="fixed border-2 border-gray-300 bg-white rounded-lg shadow-xl"
       style={{
-        left: `${position.x}px`,
-        top: `${position.y}px`,
         width: `${size.width}px`,
         height: `${size.height}px`,
+        left: `${position.x}px`,
+        top: `${position.y}px`,
         cursor: isDragging ? "grabbing" : "default",
         zIndex: zIndex,
         ...maximizedStyle,
@@ -172,9 +171,9 @@ export const FloatingFolder: React.FC<FloatingFolderProps> = ({
       <div
         ref={dragRef}
         onMouseDown={handleMouseDown}
-        className="w-full h-10 bg-gray-100 rounded-t-lg flex items-center justify-between px-4"
+        className="w-full h-10 bg-gray-100 rounded-t-lg flex items-center px-4 "
       >
-        <div className="w-2/6 flex items-center space-x-2">
+        <div className="flex items-center space-x-2">
           <div className="rounded-full p-2 bg-red-500 group relative">
             <IconX
               className="text-black group-hover:block text-xl hidden cursor-pointer absolute top-0 left-0 right-0 bottom-0 m-auto"
@@ -211,13 +210,17 @@ export const FloatingFolder: React.FC<FloatingFolderProps> = ({
             </svg>
           </div>
         </div>
-        <div className="flex justify-start items-center w-3/6">
-          <span className="text-gray-700">{title}</span>
+        <div className={`flex-grow text-center ${preventDragClass}`}>
+          <span className="text-gray-700 font-medium">{title}</span>
         </div>
       </div>
 
       {/* Folder Content */}
-      <div className="p-4 overflow-auto h-[calc(100%-2.5rem)]">{children}</div>
+      <div
+        className={`p-4 overflow-auto h-[calc(100%-2.5rem)] ${preventDragClass}`}
+      >
+        {children}
+      </div>
 
       {/* Resize Handles */}
       <div

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { FloatingDock } from "../Dock/FloatingDock";
 import { DockItems } from "../Dock/DockItems";
+import { FloatingDock } from "../Dock/FloatingDock";
 import { FloatingFolder } from "./Folders/Folder";
 
 function MainScreen() {
-  const [openFolders, setOpenFolders] = useState<string[]>([]);
+  const [openFolders, setOpenFolders] = useState<string[]>(["launchpad"])
   const [minimizedFolders, setMinimizedFolders] = useState<string[]>([]);
   const [folderZIndex, setFolderZIndex] = useState<Record<string, number>>({});
 
@@ -39,19 +39,16 @@ function MainScreen() {
           onClose={() => closeFolder(item.id)}
           onMinimize={() => toggleFolder(item.id)}
           title={item.title}
+          initialSize={item.initialSize}
+          initialPosition={item.initialPosition}
           zIndex={folderZIndex[item.id] || 10}
           onBringToFront={() => bringToFront(item.id)}
-          initialPosition={{
-            x: 100 + Math.random() * 100,
-            y: 100 + Math.random() * 100,
-          }}
         >
           {item.content}
         </FloatingFolder>
       ))}
 
       <div className="fixed bottom-0 z-50 flex justify-center items-center w-full">
-        {/* <p>Hellooooo Guyss</p> */}
         <FloatingDock
           items={DockItems}
           onItemClick={toggleFolder}
