@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FloatingFolderProps } from "../../Types/FolderType";
 import { IconMinus, IconX } from "@tabler/icons-react";
+import { UserThemeStore } from "@/app/state/store";
 
 const preventDragClass = "select-none pointer-events-none";
 
@@ -15,6 +16,7 @@ export const FloatingFolder: React.FC<FloatingFolderProps> = ({
   zIndex = 10,
   onBringToFront,
 }) => {
+  const { isDark } = UserThemeStore();
   const [isMaximized, setIsMaximized] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -154,7 +156,7 @@ export const FloatingFolder: React.FC<FloatingFolderProps> = ({
   return (
     <div
       ref={folderRef}
-      className="fixed border-2 border-gray-300 bg-white rounded-lg shadow-xl"
+      className={`fixed ${isDark?"bg-gray-800 text-white":"bg-white text-black"} rounded-lg shadow-xl`}
       style={{
         width: `${size.width}px`,
         height: `${size.height}px`,
@@ -171,7 +173,7 @@ export const FloatingFolder: React.FC<FloatingFolderProps> = ({
       <div
         ref={dragRef}
         onMouseDown={handleMouseDown}
-        className="w-full h-10 bg-gray-100 rounded-t-lg flex items-center px-4 "
+        className={`w-full h-10 ${isDark?"bg-folder-top-dark":"bg-gray-200"} rounded-t-lg flex items-center px-4 `}
       >
         <div className="flex items-center space-x-2">
           <div className="rounded-full p-2 bg-red-500 group relative">
@@ -211,13 +213,13 @@ export const FloatingFolder: React.FC<FloatingFolderProps> = ({
           </div>
         </div>
         <div className={`flex-grow text-center ${preventDragClass}`}>
-          <span className="text-gray-700 font-medium">{title}</span>
+          <span className={` ${isDark?"text-white":"text-gray-800"} font-medium`}>{title}</span>
         </div>
       </div>
 
       {/* Folder Content */}
       <div
-        className={`p-4 overflow-auto h-[calc(100%-2.5rem)] ${preventDragClass}`}
+        className={`p-4 overflow-auto h-[calc(100%-2.5rem)]`}
       >
         {children}
       </div>

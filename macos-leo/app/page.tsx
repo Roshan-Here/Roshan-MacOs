@@ -7,7 +7,7 @@ import { UserThemeStore } from "./state/store";
 import MainScreen from "./Components/MainScreen/MainScreen";
 
 export default function Home() {
-  const { setIsDark, isDark } = UserThemeStore();
+  const { isDark } = UserThemeStore();
   return (
     <div
       className={`min-h-screen w-full hide-scrollbar`}

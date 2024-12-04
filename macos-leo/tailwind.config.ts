@@ -15,6 +15,7 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
         'custom-gray' : '#e5e7eb',
+        'folder-top-dark' : '#374151'
       },
     },
   },
