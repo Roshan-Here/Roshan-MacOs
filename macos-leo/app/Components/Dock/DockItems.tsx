@@ -6,6 +6,7 @@ import Typora from "@/public/assets/Icons/typora.png";
 import Vscode from "@/public/assets/Icons/vscode.png";
 import { DockItem } from '../Types/FloatingDockType';
 import TyporaApp from "./../MainApps/Typora";
+import GithubApp from "../MainApps/Github";
 
 
 export const DockItems: DockItem[] = [
@@ -45,8 +46,8 @@ export const DockItems: DockItem[] = [
     id: "terminal",
     title: "Terminal",
     imageSrc: Terminal.src,
-    content: "Personal and family photos collection",
-    initialSize: { width: 400, height: 300 },
+    content: (<GithubApp/>),
+    initialSize: { width: 660, height: 560 },
     initialPosition: { x: 200, y: 150 },
   },
   {

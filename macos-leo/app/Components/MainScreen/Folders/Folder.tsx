@@ -219,7 +219,7 @@ export const FloatingFolder: React.FC<FloatingFolderProps> = ({
 
       {/* Folder Content */}
       <div
-        className={`p-4 overflow-auto h-[calc(100%-2.5rem)]`}
+        className={`overflow-auto h-[calc(100%-2.5rem)]`}
       >
         {children}
       </div>
