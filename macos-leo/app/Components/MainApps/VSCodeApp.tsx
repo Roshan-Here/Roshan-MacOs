@@ -1,4 +1,4 @@
-function GithubApp() {
+function VSCodeApp() {
   const BaseUrl =
     "https://github1s.com/Roshan-Here/OneCompiler/blob/HEAD/client/src/App.jsx";
   return (
@@ -8,4 +8,4 @@ function GithubApp() {
   );
 }
 
-export default GithubApp;
+export default VSCodeApp;
