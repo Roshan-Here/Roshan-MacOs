@@ -34,8 +34,8 @@ export const DockItems: DockItem[] = [
     title: "Youtube",
     imageSrc: Youtube.src,
     content: (<YoutubeApp/>),
-    initialSize: { width: 660, height: 560 },
-    initialPosition: { x: 200, y: 150 },
+    initialSize: { width: 860, height: 560 },
+    initialPosition: { x: 200, y: 20 },
   },
   {
     id: "typora",
