@@ -17,7 +17,7 @@ function Navbar() {
   }, []);
 
   return (
-    <div className={`flex flex-row justify-between ${preventDragClass} text-sm w-full p-1 text-white font-semibold bg-opacity-20 border-b border-black border-opacity-20`}>
+    <div className={`flex flex-row fixed justify-between ${preventDragClass} text-sm w-full p-1 text-white font-semibold bg-opacity-20 border-b border-black border-opacity-20`}>
       {/* Apple icon  with on click dropdown*/}
       <div className="flex flex-row gap-2 items-center">
         <p className="hover:bg-custom-gray hover:border-none hover:rounded-sm hover:bg-opacity-50 p-2 px-3 ml-1 flex justify-center items-center">

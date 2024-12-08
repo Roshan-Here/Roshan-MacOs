@@ -10,6 +10,7 @@ import TyporaApp from "../MainApps/TyporaApp";
 import VSCodeApp from "../MainApps/VSCodeApp";
 import GloblaProfileApp from "../MainApps/GloblaProfileApp";
 import YoutubeApp from "../MainApps/YoutubeApp";
+import TerminalApp from "../MainApps/TerminalApp";
 
 
 export const DockItems: DockItem[] = [
@@ -57,9 +58,9 @@ export const DockItems: DockItem[] = [
     id: "terminal",
     title: "Terminal",
     imageSrc: Terminal.src,
-    content: "",
+    content: <TerminalApp/>,
     initialSize: { width: 660, height: 560 },
-    initialPosition: { x: 200, y: 150 },
+    initialPosition: { x: 100, y: 20 },
   },
   {
     id: "globalprofile",

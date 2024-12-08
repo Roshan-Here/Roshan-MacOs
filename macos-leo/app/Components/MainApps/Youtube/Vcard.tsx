@@ -56,7 +56,6 @@ const VCard: React.FC<VideoCardProps> = ({ video, onVideoClick }) => {
               {video.title}
             </h3>
             <p className="text-xs sm:text-sm truncate">{video.channelName}</p>
-            <p className="text-xs">{video.postedDate}</p>
           </div>
         </div>
       </div>

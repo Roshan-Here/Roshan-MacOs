@@ -16,12 +16,12 @@ const VModal: React.FC<VideoModalProps> = ({ video, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-      <div className={`${isDark?'bg-gray-900':"bg-white"} rounded-lg overflow-hidden flex flex-col w-full max-w-4xl`}>
+      <div className={`${isDark?'bg-gray-900':"bg-white"} rounded-lg overflow-hidden flex flex-col w-full max-w-4xl mt-3 mb-3`}>
         <div className="flex justify-between items-center p-4 border-b">
           <h2 className="text-xl font-semibold truncate">{video.title}</h2>
           <button
             onClick={onClose}
-            className="focus:outline-none"
+            className="focus:outline-none p-1 rounded-full bg-red-500"
           >
             <X size={20}/>
           </button>
@@ -40,7 +40,6 @@ const VModal: React.FC<VideoModalProps> = ({ video, onClose }) => {
             <img src={video.channelImage} alt={video.channelName} className="w-10 h-10 rounded-full" />
             <div>
               <p className="font-semibold">{video.channelName}</p>
-              <p className="text-sm">{video.postedDate}</p>
             </div>
           </div>
         </div>

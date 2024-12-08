@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import VCard from "../Youtube/Vcard";
-import VModal from "../Youtube/Vmodel";
-import { Video } from "../Youtube/YoutubeItems";
-import { videos as initialVideos } from "../Youtube/YoutubeItems";
+import VCard from "./Youtube/Vcard";
+import VModal from "./Youtube/Vmodel";
+import { Video } from "./Youtube/YoutubeItems";
+import { videos as initialVideos } from "./Youtube/YoutubeItems";
 import { UserThemeStore } from "@/app/state/store";
 
 const shuffleArray = (array: Video[]): Video[] => {
