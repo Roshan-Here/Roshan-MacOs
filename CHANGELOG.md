@@ -10,9 +10,26 @@
 - Added Logo
 - Updated components
 - Created Folder
+- Folder now Movable by Head
+- Update Props for Folder
+- Added Folder name setup on navbar on change of Dock
+- Typora component Added
+- Added VScode App
+- Added Youtube component
+- Added Terminal - created sub page
+- Added LiveTerm to MacOs
 
 ### Changed
 - Updated Z Index of Dock
+- Updated Store
+- Updated Folder theme change
+- Updated Typora bug issue in bg change
+- Added more Youtube Videos
+- Not Using LiveTerm Deployed site
+
+### Fixed
+- nvabar drag issue & Dock index issue
+- Navbar bug fixed
 
 ### Removed
 - Deleted React Vite version
