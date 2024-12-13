@@ -11,6 +11,7 @@ import VSCodeApp from "../MainApps/VSCodeApp";
 import GloblaProfileApp from "../MainApps/GloblaProfileApp";
 import YoutubeApp from "../MainApps/YoutubeApp";
 import TerminalApp from "../MainApps/TerminalApp";
+import LiveTermMain from "../MainApps/LiveTerm/LiveTermMain";
 
 
 export const DockItems: DockItem[] = [
@@ -58,7 +59,7 @@ export const DockItems: DockItem[] = [
     id: "terminal",
     title: "Terminal",
     imageSrc: Terminal.src,
-    content: <TerminalApp/>,
+    content: <LiveTermMain />,
     initialSize: { width: 660, height: 560 },
     initialPosition: { x: 100, y: 20 },
   },
