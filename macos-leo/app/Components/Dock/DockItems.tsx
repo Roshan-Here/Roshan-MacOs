@@ -12,6 +12,7 @@ import GloblaProfileApp from "../MainApps/GloblaProfileApp";
 import YoutubeApp from "../MainApps/YoutubeApp";
 import TerminalApp from "../MainApps/TerminalApp";
 import LiveTermMain from "../MainApps/LiveTerm/LiveTermMain";
+import SafariMain from "../MainApps/Safari/SafariMain";
 
 
 export const DockItems: DockItem[] = [
@@ -27,9 +28,9 @@ export const DockItems: DockItem[] = [
     id: "safari",
     title: "Safari",
     imageSrc: Safari.src,
-    content: "Personal and family photos collection",
-    initialSize: { width: 400, height: 300 },
-    initialPosition: { x: 200, y: 150 },
+    content: <SafariMain/>,
+    initialSize: { width: 700, height: 400 },
+    initialPosition: { x: 200, y: 30 },
   },
   {
     id: "youtube",

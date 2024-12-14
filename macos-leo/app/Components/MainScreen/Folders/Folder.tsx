@@ -35,6 +35,10 @@ export const FloatingFolder: React.FC<FloatingFolderProps> = ({
   const handleMaximize = () => {
     setIsMaximized(!isMaximized);
   };
+  
+  const handleDoubleClickMaximize = () => {
+    handleMaximize(); 
+  };
 
   const maximizedStyle = isMaximized
     ? ({
@@ -173,6 +177,7 @@ export const FloatingFolder: React.FC<FloatingFolderProps> = ({
       <div
         ref={dragRef}
         onMouseDown={handleMouseDown}
+        onDoubleClick={handleDoubleClickMaximize}
         className={`w-full h-10 ${isDark?"bg-folder-top-dark":"bg-gray-200"} rounded-t-lg flex items-center px-4 `}
       >
         <div className="flex items-center space-x-2">
@@ -213,7 +218,7 @@ export const FloatingFolder: React.FC<FloatingFolderProps> = ({
           </div>
         </div>
         <div className={`flex-grow text-center ${preventDragClass}`}>
-          <span className={` ${isDark?"text-white":"text-gray-800"} font-medium`}>{title}</span>
+          <span className={` ${isDark?"text-white":"text-gray-900"} font-medium`}>{title}</span>
         </div>
       </div>
 
