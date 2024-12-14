@@ -1,5 +1,5 @@
 // Import all command functions from the `bin` module
-import { BinCommands, HistoryItem } from "../Props/shellProps";
+import { BinCommands, HistoryItem } from "../Types/shellProps";
 import * as bin from "./bin";
 
 export const shell = async (

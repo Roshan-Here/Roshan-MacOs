@@ -1,5 +1,5 @@
 import React from 'react';
-import { History } from '../Props/History';
+import { History } from '../Types/History';
 
 export const useHistory = (defaultValue: Array<History>) => {
   const [history, setHistory] = React.useState<Array<History>>(defaultValue);

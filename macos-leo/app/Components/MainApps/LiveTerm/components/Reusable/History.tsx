@@ -1,5 +1,5 @@
 import React from 'react';
-import { History as HistoryInterface } from '../Props/History';
+import { History as HistoryInterface } from '../Types/History';
 import Terminalname from './terminalname';
 
 export const History: React.FC<{ history: Array<HistoryInterface> }> = ({

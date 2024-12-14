@@ -3,7 +3,7 @@ import { getQuote } from '../api';
 import { getReadme } from '../api';
 import { getWeather } from '../api';
 
-import { Repo,QuoteResponse } from '../../Props/apiProps';
+import { Repo,QuoteResponse } from '../../Types/apiProps';
 
 export const projects = async (args: string[]): Promise<string> => {
   try {

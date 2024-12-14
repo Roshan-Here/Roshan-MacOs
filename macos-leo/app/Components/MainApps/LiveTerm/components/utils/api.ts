@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { QuoteResponse } from '../Props/apiProps';
+import { QuoteResponse } from '../Types/apiProps';
 import { GithubReadme, GithubUsername } from '../hooks/Datas';
 
 

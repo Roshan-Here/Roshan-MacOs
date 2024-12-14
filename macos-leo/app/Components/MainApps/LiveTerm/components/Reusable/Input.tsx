@@ -3,7 +3,7 @@ import { commandExists } from '../utils/commandExist';
 import { shell } from '../utils/shell';
 import { handleTabCompletion } from '../utils/tabCompletion';
 import Terminalname from './terminalname';
-import { InputProps } from '../Props/InputProps';
+import { InputProps } from '../Types/InputProps';
 import { UserThemeStore } from '@/app/state/store';
 
 
