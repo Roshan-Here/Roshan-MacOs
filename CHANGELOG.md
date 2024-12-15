@@ -18,6 +18,7 @@
 - Added Youtube component
 - Added Terminal - created sub page
 - Added LiveTerm to MacOs
+- Completed Safari
 
 ### Changed
 - Updated Z Index of Dock
@@ -26,10 +27,14 @@
 - Updated Typora bug issue in bg change
 - Added more Youtube Videos
 - Not Using LiveTerm Deployed site
+- Renamed Props to Types -simplicity
+- Updated Youtbe/Floating Dock
 
 ### Fixed
 - nvabar drag issue & Dock index issue
 - Navbar bug fixed
+- Floating Dock Nextjs/Image error
+- Fixed Youtube Nextjs/Image issue
 
 ### Removed
 - Deleted React Vite version

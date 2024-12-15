@@ -6,7 +6,7 @@
 - [X] NavBar Folder change
 - [X] Folder Theme change 
 - [ ] NavBar Menu (Apple Icon, Controller, wifi)
-- [ ] Componet for Safari
+- [X] Componet for Safari
 - [ ] Componet for Launchpad
 - [X] Componet for Youtube
 - [X] Componet for GlobalProfile

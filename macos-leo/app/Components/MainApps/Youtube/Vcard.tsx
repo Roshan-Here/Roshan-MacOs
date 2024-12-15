@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Video } from "./YoutubeItems";
 import { UserThemeStore } from "@/app/state/store";
+import Image from "next/image";
 
 interface VideoCardProps {
   video: Video;
@@ -37,19 +38,24 @@ const VCard: React.FC<VideoCardProps> = ({ video, onVideoClick }) => {
             title={video.title}
           />
         ) : (
-          <img
+          <Image
             src={video.thumbnailUrl}
             alt={video.title}
-            className="w-full h-full object-cover"
+            height={110}
+            width={130}
+            draggable={false}
+            className="w-full h-full"
           />
         )}
       </div>
       <div className="p-3">
         <div className="flex items-start space-x-3">
-          <img
+        <Image
             src={video.channelImage}
             alt={video.channelName}
-            className="w-8 h-8 rounded-full flex-shrink-0"
+            width={32} 
+            height={32} 
+            className="rounded-full flex-shrink-0"
           />
           <div className="flex-grow min-w-0">
             <h3 className="font-semibold text-sm sm:text-base line-clamp-2 mb-1">

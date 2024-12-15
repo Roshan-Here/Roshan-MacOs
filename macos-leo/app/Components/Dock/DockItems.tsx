@@ -1,10 +1,10 @@
-import GlobalProfile from "@/public/assets/Icons/globalprofile.png";
-import Laucnpad from "@/public/assets/Icons/launchpad.png";
-import Safari from "@/public/assets/Icons/safari.png";
-import Terminal from "@/public/assets/Icons/terminal.png";
-import Typora from "@/public/assets/Icons/typora.png";
-import Youtube from "@/public/assets/Icons/YouTube.png";
-import Vscode from "@/public/assets/Icons/vscode.png";
+import GlobalProfile from "@/public/assets/Icons/globalprofile.webp";
+import Laucnpad from "@/public/assets/Icons/launchpad.webp";
+import Safari from "@/public/assets/Icons/safari.webp";
+import Terminal from "@/public/assets/Icons/terminal.webp";
+import Typora from "@/public/assets/Icons/typora.webp";
+import Youtube from "@/public/assets/Icons/YouTube.webp";
+import Vscode from "@/public/assets/Icons/vscode.webp";
 import { DockItem } from '../Types/FloatingDockType';
 import TyporaApp from "../MainApps/TyporaApp";
 import VSCodeApp from "../MainApps/VSCodeApp";

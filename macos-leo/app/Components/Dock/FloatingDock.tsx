@@ -21,7 +21,7 @@ export const FloatingDock: React.FC<FloatingDockProps> = ({
   minimizedFolders,
 }) => {
   let mouseX = useMotionValue(Infinity);
-  const SetFile = useFileStore((state)=>state.setFile)
+  const SetFile = useFileStore((state) => state.setFile);
   return (
     <motion.div
       onMouseMove={(e) => mouseX.set(e.pageX)}
@@ -38,8 +38,8 @@ export const FloatingDock: React.FC<FloatingDockProps> = ({
           key={item.id}
           {...item}
           onClick={() => {
-            SetFile(item.title)
-            onItemClick(item.id)
+            SetFile(item.title);
+            onItemClick(item.id);
           }}
           isOpen={openFolders.includes(item.id)}
           isMinimized={minimizedFolders.includes(item.id)}
@@ -96,8 +96,15 @@ function IconContainer({
       onMouseLeave={() => setHovered(false)}
       className="relative mx-1 flex flex-col items-center justify-center"
     >
-      <motion.div style={{ width, height }}>
-        <Image src={imageSrc} alt={title} layout="fill" objectFit="contain" />
+      <motion.div style={{ width, height, position: "relative" }}>
+        <Image
+          src={imageSrc}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          alt={title}
+          width={300}
+          height={300}
+          style={{ objectFit: "contain" }}
+        />
       </motion.div>
       <AnimatePresence>
         {hovered && (
