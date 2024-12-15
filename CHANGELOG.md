@@ -29,6 +29,7 @@
 - Not Using LiveTerm Deployed site
 - Renamed Props to Types -simplicity
 - Updated Youtbe/Floating Dock
+- converted images to png - webp
 
 ### Fixed
 - nvabar drag issue & Dock index issue
