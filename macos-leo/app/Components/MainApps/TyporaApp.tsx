@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 
 function TyporaApp() {
   const { isDark } = UserThemeStore();
-    const DefaultData = "Heyy 👋\n\nIts me Roshan\nNice to meat You"
+    const DefaultData = "Heyy 👋\n\nIts me Roshan\nNice to meat You\n\n You can Type somthing here...."
     const [typordata, settyporadata] = useState<string>(DefaultData)
     const HandleChange=(e:React.ChangeEvent<HTMLTextAreaElement>)=>{
         settyporadata(e.target.value)
