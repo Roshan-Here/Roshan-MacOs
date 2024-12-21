@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // help to href and as in Link component
+  // experimental:{
+  //   typedRoutes:true
+  // }
 };
 
 export default nextConfig;

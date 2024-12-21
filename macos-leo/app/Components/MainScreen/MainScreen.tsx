@@ -4,7 +4,7 @@ import { FloatingDock } from "../Dock/FloatingDock";
 import { FloatingFolder } from "./Folders/Folder";
 
 function MainScreen() {
-  const [openFolders, setOpenFolders] = useState<string[]>(["typora"])
+  const [openFolders, setOpenFolders] = useState<string[]>(["webdiary"])
   const [minimizedFolders, setMinimizedFolders] = useState<string[]>([]);
   const [folderZIndex, setFolderZIndex] = useState<Record<string, number>>({});
 

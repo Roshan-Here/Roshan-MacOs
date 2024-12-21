@@ -102,6 +102,7 @@ function IconContainer({
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           alt={title}
           width={300}
+          draggable={false}
           height={300}
           style={{ objectFit: "contain" }}
         />

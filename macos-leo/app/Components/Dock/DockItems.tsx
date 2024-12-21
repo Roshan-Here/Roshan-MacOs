@@ -1,27 +1,28 @@
 import GlobalProfile from "@/public/assets/Icons/globalprofile.webp";
 import Laucnpad from "@/public/assets/Icons/launchpad.webp";
+import WebDiary from "@/public/assets/Icons/WebDiary.webp";
 import Safari from "@/public/assets/Icons/safari.webp";
 import Terminal from "@/public/assets/Icons/terminal.webp";
 import Typora from "@/public/assets/Icons/typora.webp";
-import Youtube from "@/public/assets/Icons/YouTube.webp";
 import Vscode from "@/public/assets/Icons/vscode.webp";
-import { DockItem } from '../Types/FloatingDockType';
-import TyporaApp from "../MainApps/TyporaApp";
-import VSCodeApp from "../MainApps/VSCodeApp";
+import Youtube from "@/public/assets/Icons/YouTube.webp";
 import GloblaProfileApp from "../MainApps/GloblaProfileApp";
-import YoutubeApp from "../MainApps/YoutubeApp";
-import TerminalApp from "../MainApps/TerminalApp";
 import LiveTermMain from "../MainApps/LiveTerm/LiveTermMain";
 import SafariMain from "../MainApps/Safari/SafariMain";
+import TyporaApp from "../MainApps/TyporaApp";
+import VSCodeApp from "../MainApps/VSCodeApp";
+import YoutubeApp from "../MainApps/YoutubeApp";
+import { DockItem } from '../Types/FloatingDockType';
+import WebDiaryApp from "../MainApps/WebDiary/WebDiaryApp";
 
 
 export const DockItems: DockItem[] = [
   {
-    id: "launchpad",
-    title: "Launchpad",
-    imageSrc: Laucnpad.src,
-    content: "Important work documents and files",
-    initialSize: { width: 300, height: 400 },
+    id: "webdiary",
+    title: "WebDiary",
+    imageSrc: WebDiary.src,
+    content: <WebDiaryApp/>,
+    initialSize: { width: 800, height: 400 },
     initialPosition: { x: 100, y: 100 },
   },
   {
