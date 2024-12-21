@@ -1,13 +1,14 @@
-import { useState, useCallback, useEffect } from 'react';
+// WDMarkdown.tsx
+import { UserThemeStore } from "@/app/state/store";
 import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
-import rehypeExternalLinks from 'rehype-external-links';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula, prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { WDMarkdownProps,CodeProps } from './types/WDType';
-import { UserThemeStore } from "@/app/state/store";
+import rehypeExternalLinks from 'rehype-external-links';
+import rehypeKatex from 'rehype-katex';
+import rehypeRaw from 'rehype-raw';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import { CodeProps, WDMarkdownProps } from './types/WDType';
 
 const Highlighter = (dark: boolean) => {
   return {
@@ -15,7 +16,7 @@ const Highlighter = (dark: boolean) => {
       const match = /language-(\w+)/.exec(className || '');
       return !inline && match ? (
         <SyntaxHighlighter
-          style={prism}
+          style={dark ? dracula : prism}
           language={match[1]}
           PreTag="div"
           {...props}
@@ -25,13 +26,76 @@ const Highlighter = (dark: boolean) => {
       ) : (
         <code className={className}>{children}</code>
       );
+    },
+    img({ src, alt, width, height, ...props }: React.ImgHTMLAttributes<HTMLImageElement>) {
+      // Handle both absolute and relative GitHub image paths
+      const imgStyle: React.CSSProperties = {};
+      if (width) imgStyle.width = width;
+      if (height) imgStyle.height = height;
+      
+      return (
+        <img 
+          src={src} 
+          alt={alt} 
+          style={imgStyle}
+          className="inline-block max-w-full h-auto" 
+          {...props} 
+        />
+      );
+    },
+    p({ children, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {
+      const alignment = (props as any)['align'];
+      return (
+        <p 
+          className={`${
+            alignment === 'center' ? 'text-center' : 
+            alignment === 'right' ? 'text-right' : 
+            'text-left'
+          } my-4`}
+          {...props}
+        >
+          {children}
+        </p>
+      );
+    },
+    // Support for GitHub-style details/summary
+    details({ children, ...props }: React.HTMLAttributes<HTMLDetailsElement>) {
+      return (
+        <details 
+          className={`my-4 p-4 rounded-lg ${
+            dark ? 'bg-gray-800' : 'bg-gray-50'
+          }`} 
+          {...props}
+        >
+          {children}
+        </details>
+      );
+    },
+    summary({ children, ...props }: React.HTMLAttributes<HTMLElement>) {
+      return (
+        <summary className="cursor-pointer font-medium" {...props}>
+          {children}
+        </summary>
+      );
+    },
+    // Support for badges and shields.io images
+    a({ children, href, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
+      return (
+        <a 
+          href={href} 
+          className="no-underline hover:opacity-80" 
+          {...props}
+        >
+          {children}
+        </a>
+      );
     }
   };
 };
 
+function WDMarkdown({ selectedMd }: WDMarkdownProps) {
+  const { isDark } = UserThemeStore();
 
-function WDMarkdown({ selectedMd  }: WDMarkdownProps) {
-  const { isDark } = UserThemeStore()
   if (!selectedMd) {
     return (
       <div className="w-full h-full flex items-center justify-center text-gray-500">
@@ -40,13 +104,14 @@ function WDMarkdown({ selectedMd  }: WDMarkdownProps) {
     );
   }
 
-    return (
-      <div className="w-full h-full overflow-auto">
-      <div className="markdown w-2/3 mx-auto px-2 py-6 prose max-w-none">
+  return (
+    <div className={`w-full h-full overflow-auto ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
+      <div className={`markdown w-2/3 mx-auto px-2 py-6 prose ${isDark ? 'prose-invert' : ''} max-w-none`}>
         <ReactMarkdown
           remarkPlugins={[remarkGfm, remarkMath]}
           rehypePlugins={[
             rehypeKatex,
+            rehypeRaw,
             [rehypeExternalLinks, { target: "_blank", rel: "noopener noreferrer" }]
           ]}
           components={Highlighter(isDark)}
@@ -55,7 +120,7 @@ function WDMarkdown({ selectedMd  }: WDMarkdownProps) {
         </ReactMarkdown>
       </div>
     </div>
-  )
+  );
 }
 
-export default WDMarkdown
+export default WDMarkdown;

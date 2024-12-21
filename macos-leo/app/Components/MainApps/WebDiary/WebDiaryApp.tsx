@@ -1,9 +1,9 @@
-import WDMainSidebar from "./components/WDMainSidebar";
-import WDMiddlebar from "./components/WDMiddlebar";
-import WDMarkdown from "./components/WDMarkdown";
-import { WDData,WDMdData } from "./components/types/WDType";
 import { useEffect, useState } from "react";
-import { WDItemsData } from './components/WebDiaryItems';
+import WDMainSidebar from "./components/WDMainSidebar";
+import WDMarkdown from "./components/WDMarkdown";
+import WDMiddlebar from "./components/WDMiddlebar";
+import { WDItemsData } from "./components/WebDiaryItems";
+import { WDData, WDMdData } from "./components/types/WDType";
 
 function WebDiaryApp() {
   const [selectedSection, setSelectedSection] = useState<WDData | null>(
@@ -23,13 +23,12 @@ function WebDiaryApp() {
   };
 
   const fixImageURL = (content: string, baseURL: string): string => {
-    const baseDir = baseURL.substring(0, baseURL.lastIndexOf('/') + 1);
+    const baseDir = baseURL.substring(0, baseURL.lastIndexOf("/") + 1);
     return content.replace(
       /!\[([^\]]*)\]\((?!http)([^)]+)\)/g,
       (match, alt, path) => `![${alt}](${baseDir}${path})`
     );
   };
-
 
   const handleMdClick = async (md: WDMdData) => {
     setSelectedMd(md);
@@ -50,15 +49,14 @@ function WebDiaryApp() {
     }
   }, []);
 
-
   return (
     <div className="flex flex-row w-full h-full">
-      <WDMainSidebar 
-        items={WDItemsData} 
+      <WDMainSidebar
+        items={WDItemsData}
         selectedSection={selectedSection}
         onSectionSelect={handleSectionClick}
       />
-      <WDMiddlebar 
+      <WDMiddlebar
         items={selectedSection?.md || []}
         selectedMd={selectedMd}
         onMdSelect={handleMdClick}

@@ -19,6 +19,7 @@
 - Added Terminal - created sub page
 - Added LiveTerm to MacOs
 - Completed Safari
+- Added WebDiary
 
 ### Changed
 - Updated Z Index of Dock
@@ -30,6 +31,7 @@
 - Renamed Props to Types -simplicity
 - Updated Youtbe/Floating Dock
 - converted images to png - webp
+- Updated Background images into webp
 
 ### Fixed
 - nvabar drag issue & Dock index issue
