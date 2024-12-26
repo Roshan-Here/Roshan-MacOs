@@ -370,13 +370,13 @@ const handlePrev = () => {
                     {isFullscreen ? (
                       <>
                         <IconMinimize />
-                        <p className="text-xs">Enter</p>
+                        <p className="text-xs">Exit</p>
                         <p className="text-xs">FullScreen</p>
                       </>
                     ) : (
                       <>
                         <IconMaximize />
-                        <p className="text-xs">Exit</p>
+                        <p className="text-xs">Enter</p>
                         <p className="text-xs">FullScreen</p>
                       </>
                     )}
