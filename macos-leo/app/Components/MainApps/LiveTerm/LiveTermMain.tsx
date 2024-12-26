@@ -14,7 +14,7 @@ const LiveTermMain: React.FC = () => {
       inputRef.current.focus();
     }
   };
-  
+
   const {
     history,
     command,
@@ -43,7 +43,7 @@ const LiveTermMain: React.FC = () => {
 
   useEffect(() => {
     if (inputRef.current) {
-      inputRef.current.scrollIntoView();
+      // inputRef.current.scrollIntoView(); -bug
       inputRef.current.focus({ preventScroll: true });
     }
   }, [history]);
@@ -51,30 +51,25 @@ const LiveTermMain: React.FC = () => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        terminalRef.current && 
+        terminalRef.current &&
         !terminalRef.current.contains(event.target as Node)
       ) {
         focusInput();
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
 
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
   return (
-    <div 
-      ref={terminalRef} 
-      onClick={focusInput}
-      className="h-full w-full"
-    >
+    <div className="flex-grow" ref={terminalRef} onClick={focusInput}>
       <div className="p-1 overflow-hidden h-full rounded">
         <div ref={containerRef} className="overflow-y-auto h-full">
           <History history={history} />
-
           <Input
             inputRef={inputRef}
             containerRef={containerRef}

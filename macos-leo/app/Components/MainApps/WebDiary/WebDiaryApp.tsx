@@ -50,7 +50,7 @@ function WebDiaryApp() {
   }, []);
 
   return (
-    <div className="flex flex-row w-full h-full">
+    <div className="flex flex-row w-full h-full select-none">
       <WDMainSidebar
         items={WDItemsData}
         selectedSection={selectedSection}

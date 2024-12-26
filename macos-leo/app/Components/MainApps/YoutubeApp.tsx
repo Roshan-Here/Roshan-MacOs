@@ -32,7 +32,7 @@ function YoutubeApp() {
   };
 
   return (
-    <div className={`min-h-screen ${isDark?"bg-slate-700":"bg-slate-200"}`}>
+    <div className={`min-h-screen ${isDark?"bg-slate-700":"bg-slate-200"} select-none`}>
       <header className="shadow-md">
         <div className="container mx-auto px-4 py-4">
           <h1 className="text-2xl font-bold text-red-600">YouTube Clone</h1>

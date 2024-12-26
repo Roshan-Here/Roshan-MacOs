@@ -27,7 +27,7 @@ export const FloatingDock: React.FC<FloatingDockProps> = ({
       onMouseMove={(e) => mouseX.set(e.pageX)}
       onMouseLeave={() => mouseX.set(Infinity)}
       className={cn(
-        "fixed bottom-1 left-1/2 -translate-x-1/2 mx-auto flex h-[74px] z-50 items-end rounded-2xl bg-white/10 px-4 pb-2 backdrop-blur-md",
+        "fixed bottom-1 left-1/2 -translate-x-1/2 mx-auto flex h-[74px] z-50 items-end rounded-2xl bg-white/10 px-4 pb-2 backdrop-blur-md select-none",
         className
       )}
       style={{ zIndex: 99999 }}
