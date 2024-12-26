@@ -6,19 +6,22 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'img.youtube.com',
-        pathname: '/**', 
+        pathname: '/**',
       },
       {
         protocol: 'https',
         hostname: 'picsum.photos',
-        pathname: '/**', 
+        pathname: '/**',
       },
     ],
   },
-  // help to href and as in Link component
-  // experimental:{
-  //   typedRoutes:true
-  // }
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.mp3$/,
+      type: 'asset/resource', // This tells Webpack to treat .mp3 files as resources
+    });
+    return config;
+  },
 };
 
 export default nextConfig;

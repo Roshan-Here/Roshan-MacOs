@@ -4,10 +4,11 @@ import MorngBg from "@/public/assets/background/wallpaper-day.webp";
 import NightBg from "@/public/assets/background/wallpaper-night.webp";
 import MainScreen from "./Components/MainScreen/MainScreen";
 import Navbar from "./Components/Navbar";
-import { UserThemeStore } from "./state/store";
+import { BrightnessStore, UserThemeStore } from "./state/store";
 
 export default function Home() {
   const { isDark } = UserThemeStore();
+  const { brightnessvalue} = BrightnessStore()
   return (
     <div
       className={`min-h-screen w-full hide-scrollbar`}
@@ -17,7 +18,7 @@ export default function Home() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        filter: "brightness(106%)",
+        filter: `brightness(${brightnessvalue}%)`,
       }}
     >
       <Navbar />

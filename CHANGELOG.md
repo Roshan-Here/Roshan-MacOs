@@ -20,6 +20,7 @@
 - Added LiveTerm to MacOs
 - Completed Safari
 - Added WebDiary
+- Completed NavBar
 
 ### Changed
 - Updated Z Index of Dock

@@ -1,16 +1,23 @@
-import { useEffect, useState } from "react";
-import { UserThemeStore, useFileStore } from "../state/store";
-import { formatDate } from "./utils/datetime";
 import {
   IconBluetooth,
-  IconKeyboard,
   IconMaximize,
   IconMinimize,
   IconMoon,
+  IconPlayerPauseFilled,
+  IconPlayerPlayFilled,
+  IconPlayerTrackNextFilled,
+  IconPlayerTrackPrevFilled,
   IconSun,
   IconSunset2,
+  IconVolume,
   IconWifi,
 } from "@tabler/icons-react";
+import { useEffect, useRef, useState } from "react";
+import { BrightnessStore, UserThemeStore, useFileStore,SoundStore } from "../state/store";
+import { formatDate } from "./utils/datetime";
+import Image from "next/image";
+import { MusicItem } from "./Types/MusicType";
+import { MusicItems } from "./MusicItems";
 
 declare global {
   interface HTMLElement {
@@ -28,11 +35,61 @@ declare global {
 
 function Navbar() {
   const preventDragClass = "select-none";
-  const [isControllerOpen, setIsControllerOpen] = useState<boolean>(false);
+  const [isControllerOpen, setIsControllerOpen] = useState<boolean>(true);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const { setIsDark, isDark } = UserThemeStore();
+  const { setBrightnessValue, brightnessvalue } = BrightnessStore();
+  const {setSoundValue, soundvalue} = SoundStore();
   const FileName = useFileStore((state) => state.name);
   const [currentDate, setCurrentDate] = useState(new Date());
+
+// for music
+const [currentTrack, setCurrentTrack] = useState<MusicItem>();
+const [isPlaying, setIsPlaying] = useState(false);
+const audioRef = useRef<HTMLAudioElement | null>(null);
+
+useEffect(() => {
+  const randomIndex = Math.floor(Math.random() * MusicItems.length);
+  setCurrentTrack(MusicItems[randomIndex]);
+}, []);
+
+useEffect(() => {
+  if (audioRef.current) {
+    audioRef.current.volume = soundvalue / 100;
+  }
+}, [soundvalue]);
+
+
+const handlePlayPause = () => {
+  if (audioRef.current) {
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
+  }
+};
+
+const handleNext = () => {
+  if (currentTrack) {
+    const currentIndex = MusicItems.findIndex(item => item.id === currentTrack.id);
+    const nextIndex = (currentIndex + 1) % MusicItems.length;
+    setCurrentTrack(MusicItems[nextIndex]);
+    setIsPlaying(false);
+  }
+};
+
+const handlePrev = () => {
+  if (currentTrack) {
+    const currentIndex = MusicItems.findIndex(item => item.id === currentTrack.id);
+    const prevIndex = (currentIndex - 1 + MusicItems.length) % MusicItems.length;
+    setCurrentTrack(MusicItems[prevIndex]);
+    setIsPlaying(false);
+  }
+};
+
+
   const BGCHANGE = `flex gap-1 ${
     isDark ? "bg-[#374151cc]" : "bg-gray-200"
   } p-2 rounded-lg opacity-100`;
@@ -228,13 +285,14 @@ function Navbar() {
         } justify-end  px-1 w-full mt-9 p-2 select-none`}
       >
         <div
-          className="flex flex-col w-[296px] rounded-xl"
+          className="flex flex-col w-[306px] rounded-xl border border-slate-500"
           style={{
             backgroundColor: `${
               isDark ? "rgba(31, 41, 55, 0.45)" : "rgba(243, 244, 246, 0.45)"
             }`,
           }}
         >
+          {/* first col */}
           <div className="flex flex-row justify-between gap-2  p-2">
             {/* wifi set box */}
             <div className={`${BGCHANGE} flex-col w-1/2`}>
@@ -325,6 +383,97 @@ function Navbar() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+          {/* col-2 Brightness */}
+          <div className="flex flex-col px-2">
+            <div className={`${BGCHANGE} flex-col w-full`}>
+              <p className="text-sm">Display {brightnessvalue - 6}%</p>
+              <div className="relative flex items-center">
+                <IconSun className="absolute left-2 h-5 w-5 " />
+                <input
+                  type="range"
+                  min="31"
+                  max="156"
+                  value={brightnessvalue}
+                  onChange={(e) => {
+                    setBrightnessValue(parseInt(e.target.value));
+                  }}
+                  className={`w-full h-6 ${
+                    isDark ? "bg-slate-600" : "bg-slate-300"
+                  }  rounded-lg appearance-none cursor-pointer accent-slate-100 pl-10`}
+                />
+              </div>
+            </div>
+          </div>
+          {/* col-3  Volume*/}
+          <div className="flex flex-col p-2">
+            <div className={`${BGCHANGE} flex-col w-full`}>
+              <p className="text-sm">Sound {soundvalue}%</p>
+              <div className="relative flex items-center">
+                <IconVolume className="absolute left-2 h-5 w-5 " />
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={soundvalue}
+                  onChange={(e) => {
+                    setSoundValue(parseInt(e.target.value));
+                  }}
+                  className={`w-full h-6 ${
+                    isDark ? "bg-slate-600" : "bg-slate-300"
+                  }  rounded-lg appearance-none cursor-pointer accent-slate-100 pl-10`}
+                />
+              </div>
+            </div>
+          </div>
+          {/* col-4 Music */}
+          <div className="flex flex-col px-2 mb-2">
+            <div className={`${BGCHANGE}  w-full`}>
+            {currentTrack && (
+        <>
+          <audio
+            ref={audioRef}
+            src={currentTrack.music}
+            onEnded={handleNext}
+          />
+        <div className="flex flex-col rounded-xl overflow-hidden justify-center items-center">
+          <Image
+            className="rounded-xl "
+            src={currentTrack.imageSrc}
+            alt={currentTrack.title}
+            width={60}
+            height={60}
+            draggable={false}
+          />
+        </div>
+          <div className="flex flex-col justify-center p-2">
+            <p >{currentTrack.title}</p>
+            <p className="text-xs">{currentTrack.writter}</p>
+          </div>
+          <div className="flex gap-1 justify-center items-center">
+            <IconPlayerTrackPrevFilled 
+              className="cursor-pointer" 
+              onClick={handlePrev}
+            />
+            {isPlaying ? (
+              <IconPlayerPauseFilled 
+                className="cursor-pointer" 
+                onClick={handlePlayPause}
+              />
+            ) : (
+              <IconPlayerPlayFilled 
+                className="cursor-pointer" 
+                onClick={handlePlayPause}
+              />
+            )}
+            <IconPlayerTrackNextFilled 
+              className="cursor-pointer" 
+              onClick={handleNext}
+            />
+          </div>
+        </>
+      )}
             </div>
           </div>
         </div>
