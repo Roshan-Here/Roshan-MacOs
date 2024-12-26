@@ -1,13 +1,41 @@
 import { useEffect, useState } from "react";
 import { UserThemeStore, useFileStore } from "../state/store";
 import { formatDate } from "./utils/datetime";
+import {
+  IconBluetooth,
+  IconKeyboard,
+  IconMaximize,
+  IconMinimize,
+  IconMoon,
+  IconSun,
+  IconSunset2,
+  IconWifi,
+} from "@tabler/icons-react";
+
+declare global {
+  interface HTMLElement {
+    mozRequestFullScreen?(): Promise<void>;
+    webkitRequestFullscreen?(): Promise<void>;
+    msRequestFullscreen?(): Promise<void>;
+  }
+
+  interface Document {
+    mozCancelFullScreen?(): Promise<void>;
+    webkitExitFullscreen?(): Promise<void>;
+    msExitFullscreen?(): Promise<void>;
+  }
+}
 
 function Navbar() {
   const preventDragClass = "select-none";
   const [isControllerOpen, setIsControllerOpen] = useState<boolean>(false);
-  const { setIsDark } = UserThemeStore();
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const { setIsDark, isDark } = UserThemeStore();
   const FileName = useFileStore((state) => state.name);
   const [currentDate, setCurrentDate] = useState(new Date());
+  const BGCHANGE = `flex gap-1 ${
+    isDark ? "bg-[#374151cc]" : "bg-gray-200"
+  } p-2 rounded-lg opacity-100`;
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -16,6 +44,57 @@ function Navbar() {
 
     return () => clearInterval(intervalId);
   }, []);
+
+  // full screen setup
+  const handleFullscreenChange = () => {
+    setIsFullscreen(!!document.fullscreenElement);
+  };
+
+  useEffect(() => {
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, []);
+
+  const enterFullscreen = () => {
+    const element = document.documentElement;
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+      // Firefox
+      element.mozRequestFullScreen();
+    } else if (element.webkitRequestFullscreen) {
+      // Chrome, Safari, Opera
+      element.webkitRequestFullscreen();
+    } else if (element.msRequestFullscreen) {
+      // IE/Edge
+      element.msRequestFullscreen();
+    }
+  };
+
+  const exitFullscreen = () => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      // Firefox
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      // Chrome, Safari, Opera
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      // IE/Edge
+      document.msExitFullscreen();
+    }
+  };
+
+  const toggleFullscreen = () => {
+    if (!isFullscreen) {
+      enterFullscreen();
+    } else {
+      exitFullscreen();
+    }
+  };
 
   return (
     <>
@@ -90,7 +169,10 @@ function Navbar() {
             </svg>
           </div>
           {/* controller button */}
-          <div onClick={()=>setIsControllerOpen(!isControllerOpen)} className="hover:bg-custom-gray hover:border-none hover:rounded-sm hover:bg-opacity-50 p-1">
+          <div
+            onClick={() => setIsControllerOpen(!isControllerOpen)}
+            className="hover:bg-custom-gray hover:border-none hover:rounded-sm hover:bg-opacity-50 p-1"
+          >
             <svg
               width="15"
               height="15"
@@ -140,9 +222,111 @@ function Navbar() {
         </div>
       </div>
       {/* controller settings */}
-      <div className={`flex ${isControllerOpen?"hidden":""} justify-end  px-1 w-full mt-9 p-2`}>
-        <div className="flex flex-col justify-between  border rounded-xl px-32">
-          <p>hello</p>
+      <div
+        className={`flex ${isControllerOpen ? "hidden" : ""} ${
+          isDark ? "text-white" : "text-black"
+        } justify-end  px-1 w-full mt-9 p-2 select-none`}
+      >
+        <div
+          className="flex flex-col w-[296px] rounded-xl"
+          style={{
+            backgroundColor: `${
+              isDark ? "rgba(31, 41, 55, 0.45)" : "rgba(243, 244, 246, 0.45)"
+            }`,
+          }}
+        >
+          <div className="flex flex-row justify-between gap-2  p-2">
+            {/* wifi set box */}
+            <div className={`${BGCHANGE} flex-col w-1/2`}>
+              <div className="flex flex-row items-center gap-2">
+                <div className="bg-[#3B82F6] p-1 rounded-full">
+                  <IconWifi className="text-white" />
+                </div>
+                <div className="flex flex-col">
+                  <p>WI-FI</p>
+                  <span className="text-xs">Home</span>
+                </div>
+              </div>
+              <div className="flex flex-row items-center gap-2">
+                <div className="bg-[#3B82F6] p-1 rounded-full">
+                  <IconBluetooth className="text-white" />
+                </div>
+                <div className="flex flex-col">
+                  <p>Bluetooth</p>
+                  <span className="text-xs">On</span>
+                </div>
+              </div>
+              <div className="flex flex-row items-center gap-2">
+                <div className="bg-[#3B82F6] p-1 rounded-full">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 22"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M10 2C8.19724 1.99922 6.44707 2.60736 5.03322 3.72581C3.61936 4.84427 2.62472 6.40748 2.21054 8.16202C1.79636 9.91655 1.98693 11.7595 2.75134 13.3922C3.51576 15.0249 4.80921 16.3515 6.422 17.157C6.65924 17.2758 6.83956 17.484 6.92329 17.7358C7.00703 17.9875 6.98732 18.2623 6.8685 18.4995C6.74968 18.7367 6.54149 18.9171 6.28972 19.0008C6.03796 19.0845 5.76324 19.0648 5.526 18.946C3.86503 18.1151 2.46827 16.838 1.49225 15.258C0.516223 13.6779 -0.000493699 11.8572 3.53955e-07 10C3.53955e-07 4.477 4.477 0 10 0C15.523 0 20 4.477 20 10C20.0005 11.8572 19.4838 13.6779 18.5078 15.258C17.5317 16.838 16.135 18.1151 14.474 18.946C14.3565 19.0048 14.2286 19.04 14.0976 19.0494C13.9665 19.0588 13.8349 19.0423 13.7103 19.0008C13.5856 18.9593 13.4703 18.8937 13.371 18.8077C13.2717 18.7217 13.1903 18.617 13.1315 18.4995C13.0727 18.382 13.0375 18.2541 13.0281 18.1231C13.0187 17.992 13.0352 17.8604 13.0767 17.7358C13.1182 17.6111 13.1838 17.4958 13.2698 17.3965C13.3558 17.2972 13.4605 17.2158 13.578 17.157C15.1908 16.3515 16.4842 15.0249 17.2487 13.3922C18.0131 11.7595 18.2036 9.91655 17.7895 8.16202C17.3753 6.40748 16.3806 4.84427 14.9668 3.72581C13.5529 2.60736 11.8028 1.99922 10 2ZM10 6C9.09844 5.99938 8.22311 6.30335 7.51598 6.86261C6.80884 7.42187 6.31137 8.20362 6.10425 9.08107C5.89714 9.95851 5.99251 10.8802 6.37492 11.6966C6.75732 12.5131 7.40433 13.1764 8.211 13.579C8.44198 13.7012 8.61595 13.909 8.69567 14.1578C8.7754 14.4067 8.75454 14.6769 8.63758 14.9105C8.52061 15.1442 8.31682 15.3228 8.06982 15.4081C7.82283 15.4934 7.55225 15.4787 7.316 15.367C6.10732 14.7623 5.13819 13.7673 4.5656 12.5431C3.99301 11.3188 3.8505 9.93718 4.16116 8.62187C4.47182 7.30656 5.21745 6.13465 6.27727 5.29599C7.33708 4.45733 8.649 4.00105 10.0005 4.00105C11.352 4.00105 12.6639 4.45733 13.7237 5.29599C14.7835 6.13465 15.5292 7.30656 15.8398 8.62187C16.1505 9.93718 16.008 11.3188 15.4354 12.5431C14.8628 13.7673 13.8937 14.7623 12.685 15.367C12.4482 15.4834 12.175 15.5015 11.9249 15.4173C11.6748 15.3331 11.4681 15.1535 11.3499 14.9175C11.2317 14.6816 11.2115 14.4086 11.2937 14.1578C11.376 13.9071 11.554 13.699 11.789 13.579C12.5957 13.1764 13.2427 12.5131 13.6251 11.6966C14.0075 10.8802 14.1029 9.95851 13.8957 9.08107C13.6886 8.20362 13.1912 7.42187 12.484 6.86261C11.7769 6.30335 10.9016 5.99938 10 6ZM8 10C8 9.46957 8.21071 8.96086 8.58579 8.58579C8.96086 8.21071 9.46957 8 10 8C10.5304 8 11.0391 8.21071 11.4142 8.58579C11.7893 8.96086 12 9.46957 12 10C12 10.5304 11.7893 11.0391 11.4142 11.4142C11.0391 11.7893 10.5304 12 10 12C9.46957 12 8.96086 11.7893 8.58579 11.4142C8.21071 11.0391 8 10.5304 8 10Z"
+                      fill="white"
+                    />
+                  </svg>
+                </div>
+                <div className="flex flex-col">
+                  <p>AirDrop</p>
+                  <span className="text-xs">Contacts Only</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              {/* Dark Mode */}
+              <div className={`${BGCHANGE} h-1/2`}>
+                <div
+                  onClick={setIsDark}
+                  className="flex justify-between items-center  "
+                >
+                  <div className="bg-[#3B82F6] p-1 rounded-full flex items-center justify-center">
+                    {isDark ? (
+                      <IconMoon fill="white" className="text-white" />
+                    ) : (
+                      <IconSun className="text-white" />
+                    )}
+                  </div>
+                  <p className="ml-2 text-sm">
+                    {isDark ? "Dark Mode" : "Light Mode"}
+                  </p>
+                </div>
+              </div>
+              {/* 2-row */}
+              <div className="flex h-1/2 w-full gap-1">
+                <div className={`${BGCHANGE} w-1/2`}>
+                  <div className="flex flex-col justify-between items-center w-full h-full">
+                    <IconSunset2 />
+                    <p className="text-xs">Keyboard</p>
+                    <p className="text-xs">Brighntness</p>
+                  </div>
+                </div>
+                <div onClick={toggleFullscreen} className={`${BGCHANGE} w-1/2`}>
+                  <div className="flex flex-col justify-between items-center w-full h-full">
+                    {isFullscreen ? (
+                      <>
+                        <IconMinimize />
+                        <p className="text-xs">Enter</p>
+                        <p className="text-xs">FullScreen</p>
+                      </>
+                    ) : (
+                      <>
+                        <IconMaximize />
+                        <p className="text-xs">Exit</p>
+                        <p className="text-xs">FullScreen</p>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>

@@ -32,12 +32,14 @@
 - Updated Youtbe/Floating Dock
 - converted images to png - webp
 - Updated Background images into webp
+- Updated navbar 80% completed
 
 ### Fixed
 - nvabar drag issue & Dock index issue
 - Navbar bug fixed
 - Floating Dock Nextjs/Image error
 - Fixed Youtube Nextjs/Image issue
+- Terminal topfixing error
 
 ### Removed
 - Deleted React Vite version
