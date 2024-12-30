@@ -34,6 +34,7 @@
 - converted images to png - webp
 - Updated Background images into webp
 - Updated navbar 80% completed
+- Navbar completed -- need to add some funcitons
 
 ### Fixed
 - nvabar drag issue & Dock index issue

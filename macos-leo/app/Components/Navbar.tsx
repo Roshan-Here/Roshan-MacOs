@@ -13,7 +13,12 @@ import {
   IconWifi,
 } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
-import { BrightnessStore, UserThemeStore, useFileStore,SoundStore } from "../state/store";
+import {
+  BrightnessStore,
+  UserThemeStore,
+  useFileStore,
+  SoundStore,
+} from "../state/store";
 import { formatDate } from "./utils/datetime";
 import Image from "next/image";
 import { MusicItem } from "./Types/MusicType";
@@ -35,60 +40,76 @@ declare global {
 
 function Navbar() {
   const preventDragClass = "select-none";
-  const [isControllerOpen, setIsControllerOpen] = useState<boolean>(true);
+  const [isControllerOpen, setIsControllerOpen] = useState<boolean>(false);
+  const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const { setIsDark, isDark } = UserThemeStore();
   const { setBrightnessValue, brightnessvalue } = BrightnessStore();
-  const {setSoundValue, soundvalue} = SoundStore();
+  const { setSoundValue, soundvalue } = SoundStore();
   const FileName = useFileStore((state) => state.name);
   const [currentDate, setCurrentDate] = useState(new Date());
 
-// for music
-const [currentTrack, setCurrentTrack] = useState<MusicItem>();
-const [isPlaying, setIsPlaying] = useState(false);
-const audioRef = useRef<HTMLAudioElement | null>(null);
+  const toggleMenu = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setMenuOpen(!isMenuOpen);
+    setIsControllerOpen(false);
+  };
 
-useEffect(() => {
-  const randomIndex = Math.floor(Math.random() * MusicItems.length);
-  setCurrentTrack(MusicItems[randomIndex]);
-}, []);
+  const toggleController = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsControllerOpen(!isControllerOpen);
+    setMenuOpen(false);
+  };
 
-useEffect(() => {
-  if (audioRef.current) {
-    audioRef.current.volume = soundvalue / 100;
-  }
-}, [soundvalue]);
+  // for music
+  const [currentTrack, setCurrentTrack] = useState<MusicItem>();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * MusicItems.length);
+    setCurrentTrack(MusicItems[randomIndex]);
+  }, []);
 
-const handlePlayPause = () => {
-  if (audioRef.current) {
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = soundvalue / 100;
     }
-    setIsPlaying(!isPlaying);
-  }
-};
+  }, [soundvalue]);
 
-const handleNext = () => {
-  if (currentTrack) {
-    const currentIndex = MusicItems.findIndex(item => item.id === currentTrack.id);
-    const nextIndex = (currentIndex + 1) % MusicItems.length;
-    setCurrentTrack(MusicItems[nextIndex]);
-    setIsPlaying(false);
-  }
-};
+  const handlePlayPause = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
-const handlePrev = () => {
-  if (currentTrack) {
-    const currentIndex = MusicItems.findIndex(item => item.id === currentTrack.id);
-    const prevIndex = (currentIndex - 1 + MusicItems.length) % MusicItems.length;
-    setCurrentTrack(MusicItems[prevIndex]);
-    setIsPlaying(false);
-  }
-};
+  const handleNext = () => {
+    if (currentTrack) {
+      const currentIndex = MusicItems.findIndex(
+        (item) => item.id === currentTrack.id
+      );
+      const nextIndex = (currentIndex + 1) % MusicItems.length;
+      setCurrentTrack(MusicItems[nextIndex]);
+      setIsPlaying(false);
+    }
+  };
 
+  const handlePrev = () => {
+    if (currentTrack) {
+      const currentIndex = MusicItems.findIndex(
+        (item) => item.id === currentTrack.id
+      );
+      const prevIndex =
+        (currentIndex - 1 + MusicItems.length) % MusicItems.length;
+      setCurrentTrack(MusicItems[prevIndex]);
+      setIsPlaying(false);
+    }
+  };
 
   const BGCHANGE = `flex gap-1 ${
     isDark ? "bg-[#374151cc]" : "bg-gray-200"
@@ -159,7 +180,7 @@ const handlePrev = () => {
         className={`flex flex-row fixed justify-between ${preventDragClass} text-sm w-full p-1 text-white font-semibold bg-opacity-20 border-b border-black border-opacity-20`}
       >
         {/* Apple icon  with on click dropdown*/}
-        <div className="flex flex-row gap-2 items-center">
+        <div onClick={toggleMenu} className="flex flex-row gap-2 items-center">
           <p className="hover:bg-custom-gray hover:border-none hover:rounded-sm hover:bg-opacity-50 p-2 px-3 ml-1 flex justify-center items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -227,7 +248,7 @@ const handlePrev = () => {
           </div>
           {/* controller button */}
           <div
-            onClick={() => setIsControllerOpen(!isControllerOpen)}
+            onClick={toggleController}
             className="hover:bg-custom-gray hover:border-none hover:rounded-sm hover:bg-opacity-50 p-1"
           >
             <svg
@@ -278,205 +299,276 @@ const handlePrev = () => {
           </p>
         </div>
       </div>
-      {/* controller settings */}
-      <div
-        className={`flex ${isControllerOpen ? "hidden" : ""} ${
-          isDark ? "text-white" : "text-black"
-        } justify-end  px-1 w-full mt-9 p-2 select-none`}
-      >
-        <div
-          className="flex flex-col w-[306px] rounded-xl border border-slate-500"
-          style={{
-            backgroundColor: `${
-              isDark ? "rgba(31, 41, 55, 0.45)" : "rgba(243, 244, 246, 0.45)"
-            }`,
-          }}
-        >
-          {/* first col */}
-          <div className="flex flex-row justify-between gap-2  p-2">
-            {/* wifi set box */}
-            <div className={`${BGCHANGE} flex-col w-1/2`}>
-              <div className="flex flex-row items-center gap-2">
-                <div className="bg-[#3B82F6] p-1 rounded-full">
-                  <IconWifi className="text-white" />
+
+      <div className="flex">
+        {/* Menu */}
+        {isMenuOpen && (
+          <div
+            className={`flex  ${
+              isDark ? "text-white " : "text-black "
+            } justify-start  px-1 w-full mt-9 p-2 select-none text-sm`}
+          >
+            <div
+              className={`flex flex-col ${
+                isDark ? "bg-slate-700" : "bg-custom-gray"
+              } w-[220px] rounded-lg border border-slate-500`}
+            >
+              <div className="flex flex-col gap-2 p-2">
+                <div className="flex flex-col p-1 border-b border-gray-500">
+                  <p className="hover:bg-blue-400 px-1 hover:rounded-sm">
+                    About This Mac
+                  </p>
                 </div>
-                <div className="flex flex-col">
-                  <p>WI-FI</p>
-                  <span className="text-xs">Home</span>
+                <div className="flex flex-col p-1 border-b border-gray-500 gap-1">
+                  <p className="hover:bg-blue-400 px-1 hover:rounded-sm">
+                    System Preferences...
+                  </p>
+                  <p className="hover:bg-blue-400 px-1 hover:rounded-sm">
+                    App Store...
+                  </p>
                 </div>
-              </div>
-              <div className="flex flex-row items-center gap-2">
-                <div className="bg-[#3B82F6] p-1 rounded-full">
-                  <IconBluetooth className="text-white" />
+                <div className="flex flex-col p-1 border-b border-gray-500">
+                  <p className="hover:bg-blue-400 px-1 hover:rounded-sm">
+                    Recent Items
+                  </p>
                 </div>
-                <div className="flex flex-col">
-                  <p>Bluetooth</p>
-                  <span className="text-xs">On</span>
+                <div className="flex flex-col px-1 border-b border-gray-500">
+                  <p className="hover:bg-blue-400 px-1 hover:rounded-sm">
+                    Force Quit...
+                  </p>
                 </div>
-              </div>
-              <div className="flex flex-row items-center gap-2">
-                <div className="bg-[#3B82F6] p-1 rounded-full">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 22"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M10 2C8.19724 1.99922 6.44707 2.60736 5.03322 3.72581C3.61936 4.84427 2.62472 6.40748 2.21054 8.16202C1.79636 9.91655 1.98693 11.7595 2.75134 13.3922C3.51576 15.0249 4.80921 16.3515 6.422 17.157C6.65924 17.2758 6.83956 17.484 6.92329 17.7358C7.00703 17.9875 6.98732 18.2623 6.8685 18.4995C6.74968 18.7367 6.54149 18.9171 6.28972 19.0008C6.03796 19.0845 5.76324 19.0648 5.526 18.946C3.86503 18.1151 2.46827 16.838 1.49225 15.258C0.516223 13.6779 -0.000493699 11.8572 3.53955e-07 10C3.53955e-07 4.477 4.477 0 10 0C15.523 0 20 4.477 20 10C20.0005 11.8572 19.4838 13.6779 18.5078 15.258C17.5317 16.838 16.135 18.1151 14.474 18.946C14.3565 19.0048 14.2286 19.04 14.0976 19.0494C13.9665 19.0588 13.8349 19.0423 13.7103 19.0008C13.5856 18.9593 13.4703 18.8937 13.371 18.8077C13.2717 18.7217 13.1903 18.617 13.1315 18.4995C13.0727 18.382 13.0375 18.2541 13.0281 18.1231C13.0187 17.992 13.0352 17.8604 13.0767 17.7358C13.1182 17.6111 13.1838 17.4958 13.2698 17.3965C13.3558 17.2972 13.4605 17.2158 13.578 17.157C15.1908 16.3515 16.4842 15.0249 17.2487 13.3922C18.0131 11.7595 18.2036 9.91655 17.7895 8.16202C17.3753 6.40748 16.3806 4.84427 14.9668 3.72581C13.5529 2.60736 11.8028 1.99922 10 2ZM10 6C9.09844 5.99938 8.22311 6.30335 7.51598 6.86261C6.80884 7.42187 6.31137 8.20362 6.10425 9.08107C5.89714 9.95851 5.99251 10.8802 6.37492 11.6966C6.75732 12.5131 7.40433 13.1764 8.211 13.579C8.44198 13.7012 8.61595 13.909 8.69567 14.1578C8.7754 14.4067 8.75454 14.6769 8.63758 14.9105C8.52061 15.1442 8.31682 15.3228 8.06982 15.4081C7.82283 15.4934 7.55225 15.4787 7.316 15.367C6.10732 14.7623 5.13819 13.7673 4.5656 12.5431C3.99301 11.3188 3.8505 9.93718 4.16116 8.62187C4.47182 7.30656 5.21745 6.13465 6.27727 5.29599C7.33708 4.45733 8.649 4.00105 10.0005 4.00105C11.352 4.00105 12.6639 4.45733 13.7237 5.29599C14.7835 6.13465 15.5292 7.30656 15.8398 8.62187C16.1505 9.93718 16.008 11.3188 15.4354 12.5431C14.8628 13.7673 13.8937 14.7623 12.685 15.367C12.4482 15.4834 12.175 15.5015 11.9249 15.4173C11.6748 15.3331 11.4681 15.1535 11.3499 14.9175C11.2317 14.6816 11.2115 14.4086 11.2937 14.1578C11.376 13.9071 11.554 13.699 11.789 13.579C12.5957 13.1764 13.2427 12.5131 13.6251 11.6966C14.0075 10.8802 14.1029 9.95851 13.8957 9.08107C13.6886 8.20362 13.1912 7.42187 12.484 6.86261C11.7769 6.30335 10.9016 5.99938 10 6ZM8 10C8 9.46957 8.21071 8.96086 8.58579 8.58579C8.96086 8.21071 9.46957 8 10 8C10.5304 8 11.0391 8.21071 11.4142 8.58579C11.7893 8.96086 12 9.46957 12 10C12 10.5304 11.7893 11.0391 11.4142 11.4142C11.0391 11.7893 10.5304 12 10 12C9.46957 12 8.96086 11.7893 8.58579 11.4142C8.21071 11.0391 8 10.5304 8 10Z"
-                      fill="white"
-                    />
-                  </svg>
+                <div className="flex flex-col p-1 border-b border-gray-500 gap-1">
+                  <p className="hover:bg-blue-400 px-1 hover:rounded-sm">
+                    Sleep
+                  </p>
+                  <p className="hover:bg-blue-400 px-1 hover:rounded-sm">
+                    Restart...
+                  </p>
+                  <p className="hover:bg-blue-400 px-1 hover:rounded-sm">
+                    Shut Down
+                  </p>
                 </div>
-                <div className="flex flex-col">
-                  <p>AirDrop</p>
-                  <span className="text-xs">Contacts Only</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col gap-2">
-              {/* Dark Mode */}
-              <div className={`${BGCHANGE} h-1/2`}>
-                <div
-                  onClick={setIsDark}
-                  className="flex justify-between items-center  "
-                >
-                  <div className="bg-[#3B82F6] p-1 rounded-full flex items-center justify-center">
-                    {isDark ? (
-                      <IconMoon fill="white" className="text-white" />
-                    ) : (
-                      <IconSun className="text-white" />
-                    )}
-                  </div>
-                  <p className="ml-2 text-sm">
-                    {isDark ? "Dark Mode" : "Light Mode"}
+                <div className="flex flex-col p-1 gap-1">
+                  <p className="hover:bg-blue-400 px-1 hover:rounded-sm">
+                    Lock Screen
+                  </p>
+                  <p className="hover:bg-blue-400 px-1 hover:rounded-sm">
+                    Log Out Roshan.mown...
                   </p>
                 </div>
               </div>
-              {/* 2-row */}
-              <div className="flex h-1/2 w-full gap-1">
-                <div className={`${BGCHANGE} w-1/2`}>
-                  <div className="flex flex-col justify-between items-center w-full h-full">
-                    <IconSunset2 />
-                    <p className="text-xs">Keyboard</p>
-                    <p className="text-xs">Brighntness</p>
+            </div>
+          </div>
+        )}
+
+        {/* controller settings */}
+
+        {isControllerOpen && (
+          <div
+            className={`flex ${
+              isDark ? "text-white" : "text-black"
+            } justify-end  px-1 w-full mt-9 p-2 select-none`}
+          >
+            <div
+              className="flex flex-col w-[306px] rounded-xl border border-slate-500"
+              style={{
+                backgroundColor: `${
+                  isDark
+                    ? "rgba(31, 41, 55, 0.45)"
+                    : "rgba(243, 244, 246, 0.45)"
+                }`,
+              }}
+            >
+              {/* first col */}
+              <div className="flex flex-row justify-between gap-2  p-2">
+                {/* wifi set box */}
+                <div className={`${BGCHANGE} flex-col w-1/2`}>
+                  <div className="flex flex-row items-center gap-2">
+                    <div className="bg-[#3B82F6] p-1 rounded-full">
+                      <IconWifi className="text-white" />
+                    </div>
+                    <div className="flex flex-col">
+                      <p>WI-FI</p>
+                      <span className="text-xs">Home</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-row items-center gap-2">
+                    <div className="bg-[#3B82F6] p-1 rounded-full">
+                      <IconBluetooth className="text-white" />
+                    </div>
+                    <div className="flex flex-col">
+                      <p>Bluetooth</p>
+                      <span className="text-xs">On</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-row items-center gap-2">
+                    <div className="bg-[#3B82F6] p-1 rounded-full">
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 22"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M10 2C8.19724 1.99922 6.44707 2.60736 5.03322 3.72581C3.61936 4.84427 2.62472 6.40748 2.21054 8.16202C1.79636 9.91655 1.98693 11.7595 2.75134 13.3922C3.51576 15.0249 4.80921 16.3515 6.422 17.157C6.65924 17.2758 6.83956 17.484 6.92329 17.7358C7.00703 17.9875 6.98732 18.2623 6.8685 18.4995C6.74968 18.7367 6.54149 18.9171 6.28972 19.0008C6.03796 19.0845 5.76324 19.0648 5.526 18.946C3.86503 18.1151 2.46827 16.838 1.49225 15.258C0.516223 13.6779 -0.000493699 11.8572 3.53955e-07 10C3.53955e-07 4.477 4.477 0 10 0C15.523 0 20 4.477 20 10C20.0005 11.8572 19.4838 13.6779 18.5078 15.258C17.5317 16.838 16.135 18.1151 14.474 18.946C14.3565 19.0048 14.2286 19.04 14.0976 19.0494C13.9665 19.0588 13.8349 19.0423 13.7103 19.0008C13.5856 18.9593 13.4703 18.8937 13.371 18.8077C13.2717 18.7217 13.1903 18.617 13.1315 18.4995C13.0727 18.382 13.0375 18.2541 13.0281 18.1231C13.0187 17.992 13.0352 17.8604 13.0767 17.7358C13.1182 17.6111 13.1838 17.4958 13.2698 17.3965C13.3558 17.2972 13.4605 17.2158 13.578 17.157C15.1908 16.3515 16.4842 15.0249 17.2487 13.3922C18.0131 11.7595 18.2036 9.91655 17.7895 8.16202C17.3753 6.40748 16.3806 4.84427 14.9668 3.72581C13.5529 2.60736 11.8028 1.99922 10 2ZM10 6C9.09844 5.99938 8.22311 6.30335 7.51598 6.86261C6.80884 7.42187 6.31137 8.20362 6.10425 9.08107C5.89714 9.95851 5.99251 10.8802 6.37492 11.6966C6.75732 12.5131 7.40433 13.1764 8.211 13.579C8.44198 13.7012 8.61595 13.909 8.69567 14.1578C8.7754 14.4067 8.75454 14.6769 8.63758 14.9105C8.52061 15.1442 8.31682 15.3228 8.06982 15.4081C7.82283 15.4934 7.55225 15.4787 7.316 15.367C6.10732 14.7623 5.13819 13.7673 4.5656 12.5431C3.99301 11.3188 3.8505 9.93718 4.16116 8.62187C4.47182 7.30656 5.21745 6.13465 6.27727 5.29599C7.33708 4.45733 8.649 4.00105 10.0005 4.00105C11.352 4.00105 12.6639 4.45733 13.7237 5.29599C14.7835 6.13465 15.5292 7.30656 15.8398 8.62187C16.1505 9.93718 16.008 11.3188 15.4354 12.5431C14.8628 13.7673 13.8937 14.7623 12.685 15.367C12.4482 15.4834 12.175 15.5015 11.9249 15.4173C11.6748 15.3331 11.4681 15.1535 11.3499 14.9175C11.2317 14.6816 11.2115 14.4086 11.2937 14.1578C11.376 13.9071 11.554 13.699 11.789 13.579C12.5957 13.1764 13.2427 12.5131 13.6251 11.6966C14.0075 10.8802 14.1029 9.95851 13.8957 9.08107C13.6886 8.20362 13.1912 7.42187 12.484 6.86261C11.7769 6.30335 10.9016 5.99938 10 6ZM8 10C8 9.46957 8.21071 8.96086 8.58579 8.58579C8.96086 8.21071 9.46957 8 10 8C10.5304 8 11.0391 8.21071 11.4142 8.58579C11.7893 8.96086 12 9.46957 12 10C12 10.5304 11.7893 11.0391 11.4142 11.4142C11.0391 11.7893 10.5304 12 10 12C9.46957 12 8.96086 11.7893 8.58579 11.4142C8.21071 11.0391 8 10.5304 8 10Z"
+                          fill="white"
+                        />
+                      </svg>
+                    </div>
+                    <div className="flex flex-col">
+                      <p>AirDrop</p>
+                      <span className="text-xs">Contacts Only</span>
+                    </div>
                   </div>
                 </div>
-                <div onClick={toggleFullscreen} className={`${BGCHANGE} w-1/2`}>
-                  <div className="flex flex-col justify-between items-center w-full h-full">
-                    {isFullscreen ? (
-                      <>
-                        <IconMinimize />
-                        <p className="text-xs">Exit</p>
-                        <p className="text-xs">FullScreen</p>
-                      </>
-                    ) : (
-                      <>
-                        <IconMaximize />
-                        <p className="text-xs">Enter</p>
-                        <p className="text-xs">FullScreen</p>
-                      </>
-                    )}
+                <div className="flex flex-col gap-2">
+                  {/* Dark Mode */}
+                  <div className={`${BGCHANGE} h-1/2`}>
+                    <div
+                      onClick={setIsDark}
+                      className="flex justify-between items-center  "
+                    >
+                      <div className="bg-[#3B82F6] p-1 rounded-full flex items-center justify-center">
+                        {isDark ? (
+                          <IconMoon fill="white" className="text-white" />
+                        ) : (
+                          <IconSun className="text-white" />
+                        )}
+                      </div>
+                      <p className="ml-2 text-sm">
+                        {isDark ? "Dark Mode" : "Light Mode"}
+                      </p>
+                    </div>
                   </div>
+                  {/* 2-row */}
+                  <div className="flex h-1/2 w-full gap-1">
+                    <div className={`${BGCHANGE} w-1/2`}>
+                      <div className="flex flex-col justify-between items-center w-full h-full">
+                        <IconSunset2 />
+                        <p className="text-xs">Keyboard</p>
+                        <p className="text-xs">Brighntness</p>
+                      </div>
+                    </div>
+                    <div
+                      onClick={toggleFullscreen}
+                      className={`${BGCHANGE} w-1/2`}
+                    >
+                      <div className="flex flex-col justify-between items-center w-full h-full">
+                        {isFullscreen ? (
+                          <>
+                            <IconMinimize />
+                            <p className="text-xs">Exit</p>
+                            <p className="text-xs">FullScreen</p>
+                          </>
+                        ) : (
+                          <>
+                            <IconMaximize />
+                            <p className="text-xs">Enter</p>
+                            <p className="text-xs">FullScreen</p>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* col-2 Brightness */}
+              <div className="flex flex-col px-2">
+                <div className={`${BGCHANGE} flex-col w-full`}>
+                  <p className="text-sm">Display {brightnessvalue - 6}%</p>
+                  <div className="relative flex items-center">
+                    <IconSun className="absolute left-2 h-5 w-5 " />
+                    <input
+                      type="range"
+                      min="31"
+                      max="156"
+                      value={brightnessvalue}
+                      onChange={(e) => {
+                        setBrightnessValue(parseInt(e.target.value));
+                      }}
+                      className={`w-full h-6 ${
+                        isDark ? "bg-slate-600" : "bg-slate-300"
+                      }  rounded-lg appearance-none cursor-pointer accent-slate-100 pl-10`}
+                    />
+                  </div>
+                </div>
+              </div>
+              {/* col-3  Volume*/}
+              <div className="flex flex-col p-2">
+                <div className={`${BGCHANGE} flex-col w-full`}>
+                  <p className="text-sm">Sound {soundvalue}%</p>
+                  <div className="relative flex items-center">
+                    <IconVolume className="absolute left-2 h-5 w-5 " />
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={soundvalue}
+                      onChange={(e) => {
+                        setSoundValue(parseInt(e.target.value));
+                      }}
+                      className={`w-full h-6 ${
+                        isDark ? "bg-slate-600" : "bg-slate-300"
+                      }  rounded-lg appearance-none cursor-pointer accent-slate-100 pl-10`}
+                    />
+                  </div>
+                </div>
+              </div>
+              {/* col-4 Music */}
+              <div className="flex flex-col px-2 mb-2">
+                <div className={`${BGCHANGE}  w-full`}>
+                  {currentTrack && (
+                    <>
+                      <audio
+                        ref={audioRef}
+                        src={currentTrack.music}
+                        onEnded={handleNext}
+                      />
+                      <div className="flex flex-col rounded-xl overflow-hidden justify-center items-center">
+                        <Image
+                          className="rounded-xl "
+                          src={currentTrack.imageSrc}
+                          alt={currentTrack.title}
+                          width={60}
+                          height={60}
+                          draggable={false}
+                        />
+                      </div>
+                      <div className="flex flex-col justify-center p-2">
+                        <p>{currentTrack.title}</p>
+                        <p className="text-xs">{currentTrack.writter}</p>
+                      </div>
+                      <div className="flex gap-1 justify-center items-center">
+                        <IconPlayerTrackPrevFilled
+                          className="cursor-pointer"
+                          onClick={handlePrev}
+                        />
+                        {isPlaying ? (
+                          <IconPlayerPauseFilled
+                            className="cursor-pointer"
+                            onClick={handlePlayPause}
+                          />
+                        ) : (
+                          <IconPlayerPlayFilled
+                            className="cursor-pointer"
+                            onClick={handlePlayPause}
+                          />
+                        )}
+                        <IconPlayerTrackNextFilled
+                          className="cursor-pointer"
+                          onClick={handleNext}
+                        />
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
           </div>
-          {/* col-2 Brightness */}
-          <div className="flex flex-col px-2">
-            <div className={`${BGCHANGE} flex-col w-full`}>
-              <p className="text-sm">Display {brightnessvalue - 6}%</p>
-              <div className="relative flex items-center">
-                <IconSun className="absolute left-2 h-5 w-5 " />
-                <input
-                  type="range"
-                  min="31"
-                  max="156"
-                  value={brightnessvalue}
-                  onChange={(e) => {
-                    setBrightnessValue(parseInt(e.target.value));
-                  }}
-                  className={`w-full h-6 ${
-                    isDark ? "bg-slate-600" : "bg-slate-300"
-                  }  rounded-lg appearance-none cursor-pointer accent-slate-100 pl-10`}
-                />
-              </div>
-            </div>
-          </div>
-          {/* col-3  Volume*/}
-          <div className="flex flex-col p-2">
-            <div className={`${BGCHANGE} flex-col w-full`}>
-              <p className="text-sm">Sound {soundvalue}%</p>
-              <div className="relative flex items-center">
-                <IconVolume className="absolute left-2 h-5 w-5 " />
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={soundvalue}
-                  onChange={(e) => {
-                    setSoundValue(parseInt(e.target.value));
-                  }}
-                  className={`w-full h-6 ${
-                    isDark ? "bg-slate-600" : "bg-slate-300"
-                  }  rounded-lg appearance-none cursor-pointer accent-slate-100 pl-10`}
-                />
-              </div>
-            </div>
-          </div>
-          {/* col-4 Music */}
-          <div className="flex flex-col px-2 mb-2">
-            <div className={`${BGCHANGE}  w-full`}>
-            {currentTrack && (
-        <>
-          <audio
-            ref={audioRef}
-            src={currentTrack.music}
-            onEnded={handleNext}
-          />
-        <div className="flex flex-col rounded-xl overflow-hidden justify-center items-center">
-          <Image
-            className="rounded-xl "
-            src={currentTrack.imageSrc}
-            alt={currentTrack.title}
-            width={60}
-            height={60}
-            draggable={false}
-          />
-        </div>
-          <div className="flex flex-col justify-center p-2">
-            <p >{currentTrack.title}</p>
-            <p className="text-xs">{currentTrack.writter}</p>
-          </div>
-          <div className="flex gap-1 justify-center items-center">
-            <IconPlayerTrackPrevFilled 
-              className="cursor-pointer" 
-              onClick={handlePrev}
-            />
-            {isPlaying ? (
-              <IconPlayerPauseFilled 
-                className="cursor-pointer" 
-                onClick={handlePlayPause}
-              />
-            ) : (
-              <IconPlayerPlayFilled 
-                className="cursor-pointer" 
-                onClick={handlePlayPause}
-              />
-            )}
-            <IconPlayerTrackNextFilled 
-              className="cursor-pointer" 
-              onClick={handleNext}
-            />
-          </div>
-        </>
-      )}
-            </div>
-          </div>
-        </div>
+        )}
       </div>
     </>
   );
