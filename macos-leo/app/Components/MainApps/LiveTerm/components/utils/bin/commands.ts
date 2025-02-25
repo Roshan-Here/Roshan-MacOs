@@ -114,8 +114,6 @@ export const sudo = async (args?: string[]): Promise<string> => {
 
 // Banner
 export const banner = (args?: string[]): string => {
-  return `
-ヽ(ˋ▽ˊ)ノ: Hey, you found the terminal!
-Type 'help' to see the list of available commands.
-`;
+  return `Roshan's MacOs [Version 1.0234]
+Type 'help' to see the list of available commands.`;
 };

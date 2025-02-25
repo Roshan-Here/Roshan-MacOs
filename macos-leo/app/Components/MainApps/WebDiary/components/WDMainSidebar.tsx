@@ -34,7 +34,7 @@ function WDMainSidebar({
             className={`flex px-4 items-center py-2 cursor-pointer
               ${
                 selectedSection?.id === item.id
-                  ? "bg-orange-500"
+                  ? "bg-red-500"
                   : "hover:bg-gray-400"
               }`}
             onClick={() => onSectionSelect(item)}

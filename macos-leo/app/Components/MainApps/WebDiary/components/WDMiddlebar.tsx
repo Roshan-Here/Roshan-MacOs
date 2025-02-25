@@ -10,7 +10,7 @@ function WDMiddlebar({ items, selectedMd, onMdSelect }: WDMiddlebarProps) {
             key={item.id}
             className={`p-3 border-0 border-l-2 cursor-pointer flex flex-col gap-2
               ${isDark ? 'hover:bg-gray-700' : 'hover:bg-gray-200'}
-              ${selectedMd?.id === item.id ? 'border-l-orange-500' : 'border-l-transparent'}`}
+              ${selectedMd?.id === item.id ? 'border-l-red-500' : 'border-l-transparent'}`}
             onClick={() => onMdSelect(item)}
           >
             <h1 className="font-bold">{item.title}</h1>

@@ -26,20 +26,25 @@ const LiveTermMain: React.FC = () => {
   } = useHistory([]);
 
   const init = useCallback(() => {
-    setHistory((prevHistory) => [
-      ...prevHistory,
-      {
-        id: prevHistory.length,
-        date: new Date(),
-        command: "",
-        output: banner(),
-      },
-    ]);
+    setHistory((prevHistory) => {
+      if (prevHistory.length === 0) {
+        return [
+          ...prevHistory,
+          {
+            id: prevHistory.length,
+            date: new Date(),
+            command: "",
+            output: banner(),
+          },
+        ];
+      }
+      return prevHistory;
+    });
   }, [setHistory]);
 
   useEffect(() => {
     init();
-  }, [init]);
+  }, []);   
 
   useEffect(() => {
     if (inputRef.current) {
