@@ -10,13 +10,14 @@ function Login() {
     const { isDark } = UserThemeStore();
     const { setPowerUP } = usePowerUpStore();
     const { brightnessvalue} = BrightnessStore()
-    const [passworddata, setpassword] = useState<string>("")
-    const HandleChange=(e:React.ChangeEvent<HTMLTextAreaElement>)=>{
-      setpassword(e.target.value)
-    }
+    const [passworddata, setpassword] = useState<string|number>("")
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setpassword(e.target.value);
+    };
+  
     const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault(); 
-      setPowerUP(2); 
+      e.preventDefault();
+      setPowerUP(2);
     };
 
   return (
@@ -41,11 +42,11 @@ function Login() {
         />
             <p className="text-white font-bold text-xl">Muhammed Roshan</p>
             <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-            <input type="password" value="" 
+            <input type="password"
             placeholder="Enter Password"
             className="bg-slate-400 placeholder:text-slate-300 bg-opacity-50 border-0 rounded-lg text-white focus:outline-none px-1 "
             value={passworddata}
-            onChange={HandleChange}
+            onChange={handleChange}
             />
             <button className="mb-3 text-white text-sm" type="submit">Click to Enter</button>
             </form>
