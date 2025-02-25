@@ -18,6 +18,7 @@ import {
   UserThemeStore,
   useFileStore,
   SoundStore,
+  usePowerUpStore,
 } from "../state/store";
 import { formatDate } from "./utils/datetime";
 import Image from "next/image";
@@ -48,6 +49,7 @@ function Navbar() {
   const { setSoundValue, soundvalue } = SoundStore();
   const FileName = useFileStore((state) => state.name);
   const [currentDate, setCurrentDate] = useState(new Date());
+  const { setPowerUP } = usePowerUpStore();
 
   const toggleMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -348,7 +350,7 @@ function Navbar() {
                     Shut Down
                   </p>
                 </div>
-                <div className="flex flex-col p-1 gap-1">
+                <div className="flex flex-col p-1 gap-1" onClick={()=>setPowerUP(1)}>
                   <p className="hover:bg-blue-400 px-1 hover:rounded-sm">
                     Lock Screen
                   </p>

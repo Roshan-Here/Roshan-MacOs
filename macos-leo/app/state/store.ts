@@ -86,4 +86,25 @@ const useFileStore = create<FileData & FileDataActions>()(
   )
 );
 
-export { useFileStore, UserThemeStore, BrightnessStore, SoundStore };
+
+type PowerData = {
+  number: number;
+};
+
+type PowerActions = {
+  setPowerUP: (number: number) => void;
+};
+
+const usePowerUpStore = create<PowerData & PowerActions>()(
+  persist(
+    (set) => ({
+      number: 1,  // 1 : sleep 2: shutdown 3: mainscreen
+      setPowerUP: (number: number) => set({ number }),
+    }),
+    {
+      name: "Powerupoptions", 
+    }
+  )
+);
+
+export { useFileStore, UserThemeStore, BrightnessStore, SoundStore, usePowerUpStore };
