@@ -21,6 +21,7 @@
 - Completed Safari
 - Added WebDiary
 - Completed NavBar
+- Added Readme.md file
 
 ### Changed
 - Updated Z Index of Dock
@@ -35,6 +36,7 @@
 - Updated Background images into webp
 - Updated navbar 80% completed
 - Navbar completed -- need to add some funcitons
+- Login page input update
 
 ### Fixed
 - nvabar drag issue & Dock index issue
@@ -42,6 +44,7 @@
 - Floating Dock Nextjs/Image error
 - Fixed Youtube Nextjs/Image issue
 - Terminal topfixing error
+- Update on Navbar - fix old onchange usage
 
 ### Removed
 - Deleted React Vite version
