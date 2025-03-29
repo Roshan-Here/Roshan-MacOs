@@ -295,7 +295,6 @@ function Navbar() {
           </div>
           <p
             className="mr-2 hover:bg-custom-gray hover:border-none hover:rounded-sm hover:bg-opacity-50 p-1"
-            onClick={setIsDark}
           >
             {formatDate(currentDate)}
           </p>

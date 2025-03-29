@@ -44,7 +44,7 @@ function Login() {
             <form onSubmit={handleSubmit} className="flex flex-col gap-2">
             <input type="password"
             placeholder="Enter Password"
-            className="bg-slate-400 placeholder:text-slate-300 bg-opacity-50 border-0 rounded-lg text-white focus:outline-none px-1 "
+            className="bg-slate-400 p-1 placeholder:text-slate-300 bg-opacity-50 border-0 rounded-lg text-white focus:outline-none px-1 "
             value={passworddata}
             onChange={handleChange}
             />
