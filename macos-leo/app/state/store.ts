@@ -54,7 +54,7 @@ type ThemeActions = {
 const UserThemeStore = create<Theme & ThemeActions>()(
   persist(
     (set, get) => ({
-      isDark: false,
+      isDark: true,
       setIsDark: () => {
         const currentTheme = get().isDark;
         set({ isDark: !currentTheme });

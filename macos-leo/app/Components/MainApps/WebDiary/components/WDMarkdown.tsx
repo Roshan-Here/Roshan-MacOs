@@ -64,12 +64,13 @@ const Highlighter = (dark: boolean): Components => {
       if (isBadge) {
         return (
           <Image
-            src={absoluteSrc} 
-            alt={alt || ''} 
-            className="inline-block h-7 mr-2" 
+            src={absoluteSrc}
+            alt={alt || ''}
+            className="inline-block h-7 mr-2"
             style={{ marginBottom: '8px' }}
             draggable={false}
-            {...rest} 
+            unoptimized
+            {...rest}
           />
         );
       }
