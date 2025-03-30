@@ -1,6 +1,5 @@
-// WDMarkdown.tsx
 import { UserThemeStore } from "@/app/state/store";
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown, { Components } from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dracula, prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import rehypeExternalLinks from 'rehype-external-links';
@@ -8,43 +7,169 @@ import rehypeKatex from 'rehype-katex';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
-import { CodeProps, WDMarkdownProps } from './types/WDType';
+import Image from "next/image";
+import { WDMarkdownProps } from './types/WDType';
+import React from 'react';
 
-const Highlighter = (dark: boolean) => {
+const Highlighter = (dark: boolean): Components => {
   return {
-    code({ node, inline, className, children, ...props }: CodeProps) {
+    code(props) {
+      const { className, children, ...rest } = props;
       const match = /language-(\w+)/.exec(className || '');
-      return !inline && match ? (
-        <SyntaxHighlighter
-          style={dark ? dracula : prism}
-          language={match[1]}
-          PreTag="div"
-          {...props}
-        >
-          {String(children).replace(/\n$/, '')}
-        </SyntaxHighlighter>
-      ) : (
-        <code className={className}>{children}</code>
+      
+      // Check if this is a code block with a language
+      if (match) {
+        return (
+          <SyntaxHighlighter
+            style={dark ? (dracula as any) : (prism as any)}
+            language={match[1]}
+            PreTag="div"
+            {...rest}
+            ref={null} 
+          >
+            {String(children).replace(/\n$/, '')}
+          </SyntaxHighlighter>
+        );
+      }
+      
+      // Otherwise render as inline code
+      return (
+        <code className={className} {...rest}>
+          {children}
+        </code>
       );
     },
-    img({ src, alt, width, height, ...props }: React.ImgHTMLAttributes<HTMLImageElement>) {
+    img(props) {
+      const { src, alt, width, height, ...rest } = props;
+      if (!src) return null;
+      
+      // Check if it's a shields.io badge or komarev.com badge
+      const isShieldsBadge = src.includes('img.shields.io');
+      const isKomarevBadge = src.includes('komarev.com/ghpvc');
+      const isBadge = isShieldsBadge || isKomarevBadge;
+      const isGif = src.toLowerCase().endsWith('.gif');
+      
       // Handle both absolute and relative GitHub image paths
+      const absoluteSrc = src.startsWith("http") ? src : `https://raw.githubusercontent.com${src}`;
+
       const imgStyle: React.CSSProperties = {};
       if (width) imgStyle.width = width;
       if (height) imgStyle.height = height;
       
+      // For badges, use special styling
+      if (isBadge) {
+        return (
+          <img
+            src={absoluteSrc} 
+            alt={alt || ''} 
+            className="inline-block h-7 mr-2" 
+            style={{ marginBottom: '8px' }}
+            draggable={false}
+            {...rest} 
+          />
+        );
+      }
+
+      if (isGif) {
+        return (
+          <img
+            src={absoluteSrc} 
+            alt={alt || ''} 
+            style={imgStyle}
+            className="inline-block" 
+            draggable={false}
+            {...rest} 
+          />
+        );
+      }
+      
+      // For regular images, use Next.js Image component
       return (
-        <img 
-          src={src} 
-          alt={alt} 
+        <Image
+          src={absoluteSrc} 
+          alt={alt || ''} 
           style={imgStyle}
+          width={300}
+          height={300}
+          draggable={false}
           className="inline-block max-w-full h-auto" 
-          {...props} 
+          {...rest} 
         />
       );
     },
-    p({ children, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {
-      const alignment = (props as any)['align'];
+    a(props) {
+      const { children, href, ...rest } = props;
+      
+
+      const isBadgeLink = React.Children.toArray(children).some(child => {
+        if (!React.isValidElement(child)) return false;
+        
+        // img element
+        if (child.type !== 'img') return false;
+        
+        // src property
+        const imgProps = child.props as { src?: string };
+        const src = imgProps.src;
+        
+        // badge shields.io or komarev.com
+        return src && (src.includes('img.shields.io') || src.includes('komarev.com/ghpvc'));
+      });
+      
+      if (isBadgeLink) {
+        return (
+          <a 
+            href={href} 
+            className="inline-block no-underline hover:opacity-80" 
+            target="_blank"
+            rel="noopener noreferrer"
+            {...rest}
+          >
+            {children}
+          </a>
+        );
+      }
+      
+      // Regular links
+      return (
+        <a 
+          href={href} 
+          className="no-underline hover:opacity-80" 
+          {...rest}
+        >
+          {children}
+        </a>
+      );
+    },
+    p(props) {
+      const { children, ...rest } = props;
+      const alignment = (rest as any)['align'];
+      
+      // Fix TypeScript errors by safely checking for badge links
+      const containsBadges = React.Children.toArray(children).some(child => {
+        if (!React.isValidElement(child)) return false;
+        if (child.type !== 'a') return false;
+        
+        const childProps = child.props as { children?: React.ReactNode };
+        
+        return React.Children.toArray(childProps.children || []).some(innerChild => {
+          if (!React.isValidElement(innerChild)) return false;
+          if (innerChild.type !== 'img') return false;
+          
+          const imgProps = innerChild.props as { src?: string };
+          const src = imgProps.src;
+          
+          return src && (src.includes('img.shields.io') || src.includes('komarev.com/ghpvc'));
+        });
+      });
+      
+      if (containsBadges) {
+        return (
+          <div className="flex flex-wrap items-center gap-2 my-4">
+            {children}
+          </div>
+        );
+      }
+      
       return (
         <p 
           className={`${
@@ -52,42 +177,33 @@ const Highlighter = (dark: boolean) => {
             alignment === 'right' ? 'text-right' : 
             'text-left'
           } my-4`}
-          {...props}
+          {...rest}
         >
           {children}
         </p>
       );
     },
-    // Support for GitHub-style details/summary
-    details({ children, ...props }: React.HTMLAttributes<HTMLDetailsElement>) {
+    details(props) {
+      const { children, ...rest } = props;
+      
       return (
         <details 
           className={`my-4 p-4 rounded-lg ${
             dark ? 'bg-gray-800' : 'bg-gray-50'
           }`} 
-          {...props}
+          {...rest}
         >
           {children}
         </details>
       );
     },
-    summary({ children, ...props }: React.HTMLAttributes<HTMLElement>) {
+    summary(props) {
+      const { children, ...rest } = props;
+      
       return (
-        <summary className="cursor-pointer font-medium" {...props}>
+        <summary className="cursor-pointer font-medium" {...rest}>
           {children}
         </summary>
-      );
-    },
-    // Support for badges and shields.io images
-    a({ children, href, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
-      return (
-        <a 
-          href={href} 
-          className="no-underline hover:opacity-80" 
-          {...props}
-        >
-          {children}
-        </a>
       );
     }
   };

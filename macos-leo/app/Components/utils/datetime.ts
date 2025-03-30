@@ -1,12 +1,4 @@
 export function formatDate(date: Date): string {
-  const options: Intl.DateTimeFormatOptions = {
-    weekday: "short", // 'Fri'
-    month: "short", // 'Nov'
-    day: "numeric", // '29'
-    hour: "numeric", // '1'
-    minute: "numeric", // '22'
-    hour12: true, // AM/PM format
-  };
 
   // Get individual components of the date
   const weekday = date.toLocaleString("en-US", { weekday: "short" });

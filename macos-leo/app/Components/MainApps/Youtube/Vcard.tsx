@@ -1,7 +1,7 @@
-import React, { useRef, useState } from "react";
-import { Video } from "./YoutubeItems";
 import { UserThemeStore } from "@/app/state/store";
 import Image from "next/image";
+import React, { useState } from "react";
+import { Video } from "./YoutubeItems";
 
 interface VideoCardProps {
   video: Video;

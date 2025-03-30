@@ -20,7 +20,7 @@ export const FloatingDock: React.FC<FloatingDockProps> = ({
   openFolders,
   minimizedFolders,
 }) => {
-  let mouseX = useMotionValue(Infinity);
+  const mouseX = useMotionValue(Infinity);
   const SetFile = useFileStore((state) => state.setFile);
   return (
     <motion.div
@@ -63,22 +63,22 @@ function IconContainer({
   isOpen: boolean;
   isMinimized: boolean;
 }) {
-  let ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
-  let distance = useTransform(mouseX, (val) => {
-    let bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+  const distance = useTransform(mouseX, (val) => {
+    const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
     return val - bounds.x - bounds.width / 2;
   });
 
-  let widthTransform = useTransform(distance, [-150, 0, 150], [60, 120, 60]);
-  let heightTransform = useTransform(distance, [-150, 0, 150], [60, 120, 60]);
+  const widthTransform = useTransform(distance, [-150, 0, 150], [60, 120, 60]);
+  const heightTransform = useTransform(distance, [-150, 0, 150], [60, 120, 60]);
 
-  let width = useSpring(widthTransform, {
+  const width = useSpring(widthTransform, {
     mass: 0.1,
     stiffness: 150,
     damping: 12,
   });
-  let height = useSpring(heightTransform, {
+  const height = useSpring(heightTransform, {
     mass: 0.1,
     stiffness: 150,
     damping: 12,

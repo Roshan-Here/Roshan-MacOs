@@ -1,4 +1,4 @@
-const help = async (args: string[]): Promise<string> => {
+const help = async (): Promise<string> => {
   {
     return `Welcome! Here are all the available commands
 'echo'

@@ -2,13 +2,13 @@
 
 import MorngBg from "@/public/assets/background/wallpaper-day.webp";
 import NightBg from "@/public/assets/background/wallpaper-night.webp";
+import Login from "./Components/Login";
 import MainScreen from "./Components/MainScreen/MainScreen";
 import Navbar from "./Components/Navbar";
 import { BrightnessStore, usePowerUpStore, UserThemeStore } from "./state/store";
-import Login from "./Components/Login";
 
 export default function Home() {
-  const { number, setPowerUP } = usePowerUpStore();
+  const { number } = usePowerUpStore();
   const { isDark } = UserThemeStore();
   const { brightnessvalue} = BrightnessStore()
   return (

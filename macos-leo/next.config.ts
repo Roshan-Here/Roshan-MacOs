@@ -13,6 +13,46 @@ const nextConfig: NextConfig = {
         hostname: 'picsum.photos',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'raw.githubusercontent.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'img.shields.io',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'komarev.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'github-readme-stats-sigma-five.vercel.app',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'github-profile-trophy.vercel.app',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'github-readme-stats.vercel.app',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ghactivity.mrayush.me',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'github-readme-streak-stats.herokuapp.com',
+        pathname: '/**',
+      },
     ],
   },
   webpack: (config) => {

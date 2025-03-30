@@ -1,9 +1,9 @@
 
-import { X } from "lucide-react"; 
-import React, { useEffect, useRef } from "react";
-import { Video } from "./YoutubeItems";
 import { UserThemeStore } from "@/app/state/store";
-
+import { X } from "lucide-react";
+import React from "react";
+import { Video } from "./YoutubeItems";
+import Image from "next/image";
 
 interface VideoModalProps {
   video: Video | null;
@@ -37,7 +37,14 @@ const VModal: React.FC<VideoModalProps> = ({ video, onClose }) => {
         </div>
         <div className="p-4 border-t">
           <div className="flex items-center space-x-3">
-            <img src={video.channelImage} alt={video.channelName} className="w-10 h-10 rounded-full" />
+          <Image
+            src={video.channelImage}
+            alt={video.channelName}
+            width={40} 
+            height={40} 
+            className="w-10 h-10 rounded-full"
+            draggable={false}
+          />
             <div>
               <p className="font-semibold">{video.channelName}</p>
             </div>

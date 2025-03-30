@@ -5,7 +5,7 @@ import { getWeather } from '../api';
 
 import { Repo,QuoteResponse } from '../../Types/apiProps';
 
-export const projects = async (args: string[]): Promise<string> => {
+export const projects = async (): Promise<string> => {
   try {
     const projects: Repo[] = await getProjects();
     if (projects.length === 0) {
@@ -24,7 +24,7 @@ export const projects = async (args: string[]): Promise<string> => {
   }
 };
 
-export const quote = async (args: string[]): Promise<QuoteResponse | string> => {
+export const quote = async (): Promise<QuoteResponse | string> => {
   const data = await getQuote();
   
   if (typeof data === 'string') {
@@ -36,7 +36,7 @@ export const quote = async (args: string[]): Promise<QuoteResponse | string> => 
 };
 
 
-  export const readme = async (args: string[]): Promise<string> => {
+  export const readme = async (): Promise<string> => {
   try {
     const readme = await getReadme();
     return `Opening GitHub README...\n\n${readme}`;

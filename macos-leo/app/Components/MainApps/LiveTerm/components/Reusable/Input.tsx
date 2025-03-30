@@ -1,10 +1,9 @@
+import { UserThemeStore } from '@/app/state/store';
 import React from 'react';
-import { commandExists } from '../utils/commandExist';
+import { InputProps } from '../Types/InputProps';
 import { shell } from '../utils/shell';
 import { handleTabCompletion } from '../utils/tabCompletion';
 import Terminalname from './terminalname';
-import { InputProps } from '../Types/InputProps';
-import { UserThemeStore } from '@/app/state/store';
 
 
 const Input: React.FC<InputProps> = ({

@@ -13,6 +13,7 @@ function SafariMain() {
     if (isExternal) {
       window.open(link, "_blank");
     } else {
+      console.log(isExternalLink)
       setCurrentUrl(link);
       setShowFrame(true);
       setIsExternalLink(false);
