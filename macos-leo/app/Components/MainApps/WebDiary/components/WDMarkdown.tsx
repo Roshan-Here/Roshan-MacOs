@@ -11,24 +11,28 @@ import Image from "next/image";
 import { WDMarkdownProps } from './types/WDType';
 import React from 'react';
 
+
 const Highlighter = (dark: boolean): Components => {
   return {
     code(props) {
-      const { className, children, ...rest } = props;
-      const match = /language-(\w+)/.exec(className || '');
-      
+      // https://github.com/react-syntax-highlighter/react-syntax-highlighter/issues/479#issuecomment-1267772279
+      // thnkx to him -- https://github.com/void-index 
+
+      const { className, children,style, ...rest } = props;
+      console.log(style)
+      const match = /language-(\w+)/.exec(className || '');  
       // Check if this is a code block with a language
       if (match) {
         return (
-          <SyntaxHighlighter
-            style={dark ? (dracula as any) : (prism as any)}
-            language={match[1]}
-            PreTag="div"
-            {...rest}
-            ref={null} 
-          >
-            {String(children).replace(/\n$/, '')}
-          </SyntaxHighlighter>
+        <SyntaxHighlighter
+          style={dark ? dracula : prism} 
+          PreTag="div"
+          {...rest}
+          ref={null}
+        >
+          {String(children).replace(/\n$/, '')}
+        </SyntaxHighlighter>
+
         );
       }
       
@@ -59,7 +63,7 @@ const Highlighter = (dark: boolean): Components => {
       // For badges, use special styling
       if (isBadge) {
         return (
-          <img
+          <Image
             src={absoluteSrc} 
             alt={alt || ''} 
             className="inline-block h-7 mr-2" 
@@ -72,7 +76,7 @@ const Highlighter = (dark: boolean): Components => {
 
       if (isGif) {
         return (
-          <img
+          <Image
             src={absoluteSrc} 
             alt={alt || ''} 
             style={imgStyle}
@@ -142,7 +146,13 @@ const Highlighter = (dark: boolean): Components => {
     },
     p(props) {
       const { children, ...rest } = props;
-      const alignment = (rest as any)['align'];
+      interface ParagraphAttributes {
+        align?: 'left' | 'center' | 'right';
+        [key: string]: string | number | boolean | undefined; 
+      }
+      
+      const { align: alignment } = rest as ParagraphAttributes;
+    
       
       // Fix TypeScript errors by safely checking for badge links
       const containsBadges = React.Children.toArray(children).some(child => {

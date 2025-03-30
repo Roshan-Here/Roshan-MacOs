@@ -3,7 +3,7 @@ import { GithubUsername, linkedinUsername, Myemail, MyName, Tusername } from '..
 
 
 // About
-export const about = async (args: string[]): Promise<string> => {
+export const about = async (): Promise<string> => {
   return `Hi, I am ${MyName}. 
 More about me:
 type 'github' - my github .

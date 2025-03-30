@@ -64,7 +64,7 @@ function IconContainer({
   isMinimized: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-
+  console.log(id)
   const distance = useTransform(mouseX, (val) => {
     const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
     return val - bounds.x - bounds.width / 2;
