@@ -52,6 +52,7 @@
 - Terminal topfixing error
 - Update on Navbar - fix old onchange usage
 - Vercel Build issues fix
+- Markdown fix -https://github.com/void-index helped his comment on git
 
 ### Removed
 - Deleted React Vite version

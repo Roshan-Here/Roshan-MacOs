@@ -17,7 +17,7 @@ export const WDItemsData : WDData[] = [
                 title: "About this site",
                 file: "aboutsite",
                 smallDescription: "My new macOS-inspired portfolio.",
-                link: "https://raw.githubusercontent.com/Roshan-Here/Roshan-MacOs/master/README.md"
+                link: "https://raw.githubusercontent.com/Roshan-Here/Roshan-MacOs/main/README.md"
             }
             ]
         },
