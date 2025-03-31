@@ -13,11 +13,11 @@ export const WDItemsData : WDData[] = [
                 link: "https://raw.githubusercontent.com/Roshan-Here/Roshan-Here/master/README.md"
             },
             {
-                id: "3",
+                id: "2",
                 title: "About this site",
                 file: "aboutsite",
                 smallDescription: "My new macOS-inspired portfolio.",
-                link: "https://raw.githubusercontent.com/Roshan-Here/Roshan-MacOs/main/README.md"
+                link: "https://raw.githubusercontent.com/Roshan-Here/Roshan-MacOs/main/Readme.md"
             }
             ]
         },
