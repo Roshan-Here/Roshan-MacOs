@@ -18,8 +18,8 @@ npm run dev
 - My Figma design assets [Link](https://www.figma.com/design/jVm4Tn3esYWe3wlLqyLGZG/Horse-Booking-System?t=RRR7qb0r2tCoipQW-1)
 
 
-![light mode](./macos-leo/public/Screenshot%20(661).png)
-![dark mode](./macos-leo/public/Screenshot%20(660).png)
+![light mode](https://raw.githubusercontent.com/Roshan-Here/Roshan-MacOs/refs/heads/main/macos-leo/public/Screenshot%20(661).png)
+![dark mode](https://raw.githubusercontent.com/Roshan-Here/Roshan-MacOs/refs/heads/main/macos-leo/public/Screenshot%20(660).png)
 
 ## Changelog
 [Lastest Updates](./CHANGELOG.md)
